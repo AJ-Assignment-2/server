@@ -1,5 +1,12 @@
-
 # Created by https://www.gitignore.io/api/java,bluej,netbeans,intellij
+
+### All IntelliJ IDE files ###
+.idea/
+RestaurantOrdering.iml
+
+### Generated Database Folder and Derby files ###
+RestaurantOrderingDB/
+derby.log
 
 ### bluej ###
 # BlueJ: A Java IDE for programming beginners. http://bluej.org
