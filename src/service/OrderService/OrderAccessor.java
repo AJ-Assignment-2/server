@@ -26,11 +26,13 @@ public class OrderAccessor implements OrderDao {
     private static final String COLUMN_CUSTOMER_NAME = "customer_name";
     private static final String COLUMN_STATE = "state";
     private static final String COLUMN_ID = "id";
+    private static final String COLUMN_TABLE_NUMBER = "table_number";
 
     private static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
             COLUMN_ID + " INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1), " +
             COLUMN_CUSTOMER_NAME + " VARCHAR(50) NOT NULL, " +
-            COLUMN_STATE + " VARCHAR(50) NOT NULL )";
+            COLUMN_STATE + " VARCHAR(50) NOT NULL, " +
+            COLUMN_TABLE_NUMBER + " INTEGER NOT NULL )";
 
     private Connection connection;
 
@@ -72,6 +74,7 @@ public class OrderAccessor implements OrderDao {
                 Order order = new Order();
                 order.setId(orderResultSet.getInt(COLUMN_ID));
                 order.setCustomerName(orderResultSet.getString(COLUMN_CUSTOMER_NAME));
+                order.setTableNumber(orderResultSet.getInt(COLUMN_TABLE_NUMBER));
 
                 String stateString = orderResultSet.getString(COLUMN_STATE);
                 Arrays.stream(OrderState.values()).forEach(orderState -> {
@@ -141,19 +144,21 @@ public class OrderAccessor implements OrderDao {
      */
     @Override
     public void createOrder(Order order) {
-        String orderSql = "INSERT INTO RestaurantOrder (" + COLUMN_CUSTOMER_NAME + ", " + COLUMN_STATE + ")" +
-                " VALUES (?, ?)";
+        String orderSql = "INSERT INTO RestaurantOrder (" + COLUMN_CUSTOMER_NAME + ", "
+                + COLUMN_STATE + ", " + COLUMN_TABLE_NUMBER + ")" +
+                " VALUES (?, ?, ?)";
 
         try {
             // Insert the Order into the database.
             PreparedStatement statement = connection.prepareStatement(orderSql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, order.getCustomerName());
             statement.setString(2, order.getState().toString());
+            statement.setString(3, Integer.toString(order.getTableNumber()));
             statement.execute();
 
             // Create entries for the Order's menu item's in the RestaurantOrderItem weak entity.
             ResultSet keysFromInsert = statement.getGeneratedKeys();
-            int insertedOrderId = 0;
+            int insertedOrderId;
             if (keysFromInsert.next()) {
                 insertedOrderId = keysFromInsert.getInt(1);
                 for (MenuItem menuItem : order.getMenuItemSelections().keySet() ) {
