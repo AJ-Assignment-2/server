@@ -8,10 +8,10 @@ import javafx.stage.Stage;
 import model.MenuItem.MenuItem;
 import model.Order.Order;
 import model.Order.OrderState;
-import service.MenuItemService.MenuItemAccessor;
-import service.MenuItemService.MenuItemDao;
-import service.OrderService.OrderAccessor;
-import service.OrderService.OrderDao;
+import server.service.MenuItemService.MenuItemAccessor;
+import server.service.MenuItemService.MenuItemDao;
+import server.service.OrderService.OrderAccessor;
+import server.service.OrderService.OrderDao;
 
 import java.util.List;
 import java.util.logging.Logger;

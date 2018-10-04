@@ -1,4 +1,4 @@
-package service.MenuItemService;
+package server.service.MenuItemService;
 
 import model.MenuItem.MenuItem;
 import model.MenuItem.MenuItemCategory;
@@ -158,7 +158,7 @@ public class MenuItemAccessor implements MenuItemDao {
             Statement statement = connection.createStatement();
             statement.execute(CREATE_TABLE);
         } catch (Exception e) {
-            LOGGER.log(Level.INFO, "MenuItem table is probably already created: " + e.toString(), e);
+            LOGGER.log(Level.INFO, "MenuItem table is probably already created");
         }
     }
 
@@ -169,7 +169,7 @@ public class MenuItemAccessor implements MenuItemDao {
         BufferedReader reader;
         try {
             reader = new BufferedReader(new InputStreamReader(
-                    MenuItemAccessor.class.getResourceAsStream("/resources/menu_item_data.csv"), StandardCharsets.UTF_8));
+                    MenuItemAccessor.class.getResourceAsStream("/server/resources/menu_item_data.csv"), StandardCharsets.UTF_8));
 
             String line;
             Boolean firstLine = true;

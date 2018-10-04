@@ -1,4 +1,4 @@
-package service.OrderService;
+package server.service.OrderService;
 
 import model.MenuItem.MenuItem;
 import model.MenuItem.MenuItemCategory;
@@ -198,7 +198,7 @@ public class OrderAccessor implements OrderDao {
                     "quantity INTEGER )";
             statement.execute(orderItemTableSql);
         } catch (Exception e) {
-            LOGGER.log(Level.INFO, "RestaurantOrderItem table is probably already created: " + e.toString(), e);
+            LOGGER.log(Level.INFO, "RestaurantOrderItem table is probably already created");
         }
     }
 }
