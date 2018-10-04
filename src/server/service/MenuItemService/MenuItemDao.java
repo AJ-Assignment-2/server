@@ -1,4 +1,4 @@
-package service.MenuItemService;
+package server.service.MenuItemService;
 
 import model.MenuItem.MenuItem;
 
