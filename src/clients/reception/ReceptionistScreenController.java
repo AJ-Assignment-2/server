@@ -49,7 +49,6 @@ public class ReceptionistScreenController {
             newOrder.setTableNumber();
             newOrder.setCustomerName();
             newOrder.setState(OrderState.WAITING);
-            orderService.sendNewOrder(newOrder);
         }
         
     }
