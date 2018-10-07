@@ -47,7 +47,11 @@ public class CustomerOrderView extends JFrame{
     private JLabel beverageLabel;
     private JComboBox<String> beverageComboBox;
 
+
+    private JPanel centrePanel;
+
     private JScrollPane orderTableScrollPane;
+
 
     private JPanel southPanel;
     
