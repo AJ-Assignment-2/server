@@ -9,9 +9,12 @@ import server.service.OrderService.OrderAccessor;
 import server.service.OrderService.OrderDao;
 
 import java.rmi.RemoteException;
+import java.rmi.server.RemoteServer;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -27,12 +30,24 @@ public class CustomerServiceImpl extends UnicastRemoteObject implements Customer
     }
 
     @Override
-    public void createOrder(Order order) {
+    public void createOrder(Order order) throws RemoteException {
+        try {
+            LOGGER.log(Level.INFO,
+                    "(" + RemoteServer.getClientHost() + ") Incoming Request: Creating a new order");
+        } catch (ServerNotActiveException e) {
+            LOGGER.log(Level.SEVERE, "RMI server has shut down!", e);
+        }
         orderAccessor.createOrder(order);
     }
 
     @Override
     public List<MenuItem> getMenuItems() throws RemoteException {
+        try {
+            LOGGER.log(Level.INFO,
+                    "(" + RemoteServer.getClientHost() + ") Incoming Request: Retrieving all menu items");
+        } catch (ServerNotActiveException e) {
+            LOGGER.log(Level.SEVERE, "RMI server has shut down!", e);
+        }
         return menuItemAccessor.readMenuItems();
     }
 }

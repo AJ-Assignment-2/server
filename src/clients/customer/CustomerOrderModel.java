@@ -1,6 +1,7 @@
 package clients.customer;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,6 +27,7 @@ public class CustomerOrderModel implements ObservableCustomerOrderModel{
 
     private List<MenuItem> menuItems;
     private Order customerOrder;
+    private CustomerService customerService;
     private List<CustomerOrderModelObserver> observers;
     
     
@@ -33,22 +35,12 @@ public class CustomerOrderModel implements ObservableCustomerOrderModel{
         observers = new ArrayList<>();
         customerOrder = new Order();
         try {
-            CustomerService customerService = (CustomerService) Naming.lookup("rmi://127.0.0.1/Customer");
+            customerService = (CustomerService) Naming.lookup("rmi://127.0.0.1/Customer");
             menuItems = customerService.getMenuItems();
 
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Cannot connect to customer RMI service", e);
         }
-    }
-    
-    public List<MenuItem> getMenuWithCategory(MenuItemCategory category) {
-        List<MenuItem> menusWithCategory = new ArrayList<>();
-        
-        menuItems.forEach(item -> {
-            if (item.getCategory() == category) menusWithCategory.add(item);
-        });
-        
-        return menusWithCategory;
     }
 
     public List<MenuItem> getMenuWithTypeCategory(MenuItemCategory category, MenuItemType type) {
@@ -67,6 +59,15 @@ public class CustomerOrderModel implements ObservableCustomerOrderModel{
 
     public Order getCustomerOrder() {
         return customerOrder;
+    }
+
+    public void submitCustomerOrder() {
+        try {
+            customerService.createOrder(customerOrder);
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, "Unable to submit customer order", e);
+        }
+
     }
 
     @Override

@@ -4,7 +4,7 @@ package clients.reception;
  *
  * @author Imanuel
  */
-public class Run {
+public class ReceptionApplication {
     public static void main(String[] args){
         ReceptionView receptionView =new ReceptionView();
         ReceptionModel receptionModel =new ReceptionModel();

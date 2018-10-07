@@ -4,7 +4,7 @@ package clients.chef;
  *
  * @author Imanuel
  */
-public class Run {
+public class ChefApplication {
     public static void main(String[] args){
         ChefScreenView chefScreenView=new ChefScreenView();
         ChefScreenModel chefScreenModel=new ChefScreenModel();

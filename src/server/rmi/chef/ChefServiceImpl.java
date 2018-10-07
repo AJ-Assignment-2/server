@@ -6,9 +6,12 @@ import server.service.OrderService.OrderAccessor;
 import server.service.OrderService.OrderDao;
 
 import java.rmi.RemoteException;
+import java.rmi.server.RemoteServer;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Connection;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,12 @@ public class ChefServiceImpl extends UnicastRemoteObject implements ChefService 
 
     @Override
     public List<Order> getWaitingOrders() throws RemoteException {
+        try {
+            LOGGER.log(Level.INFO,
+                    "(" + RemoteServer.getClientHost() + ") Incoming Request: Retrieving all orders with the WAITING state");
+        } catch (ServerNotActiveException e) {
+            LOGGER.log(Level.SEVERE, "RMI server has shut down!", e);
+        }
         return orderAccessor.getAllOrders().stream().filter(order -> order.getState() == OrderState.WAITING)
                 .collect(Collectors.toList());
     }

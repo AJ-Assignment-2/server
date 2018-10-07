@@ -13,6 +13,7 @@ import static model.MenuItem.MenuItemCategory.FOOD;
 import model.MenuItem.MenuItemType;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -47,7 +48,7 @@ public class CustomerOrderController {
         public void actionPerformed(ActionEvent e) {
             MenuItemType selectedType = null;
             for (MenuItemType type : MenuItemType.values()) {
-                if (type.toString().toLowerCase().equals(((JRadioButton)e.getSource()).getText().toLowerCase())) {
+                if (type.toString().equalsIgnoreCase(((JRadioButton)e.getSource()).getText())) {
                     selectedType = type;
                 }
             }
@@ -86,7 +87,7 @@ public class CustomerOrderController {
             String chosenFood= customerOrderView.getChosenFood();
             String chosenBeverage= customerOrderView.getChosenBeverage();
             if(!chosenFood.equals("-------- Select the food --------") || !chosenBeverage.equals("-------- Select the beverage --------")){
-                customerOrderView.displayDetailsChoices();
+                //customerOrderView.displayDetailsChoices();
                 
             } else customerOrderView.showErrorDialog("Hi "+ customerOrderView.getCustomerName()+"\nPlease select food and beverage", "Select Menu");
         }
@@ -97,12 +98,13 @@ public class CustomerOrderController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ArrayList<String> allOrders=new ArrayList<>();
-            String chosenFood= customerOrderView.getChosenFood();
-            String chosenBeverage= customerOrderView.getChosenBeverage();
             if(!customerOrderModel.getCustomerOrder().getMenuItemSelections().isEmpty()){
-               // allOrders = customerOrderModel.getAllOrders();
-               // customerOrderView.showAllOrders(allOrders);
+
+                MenuItemTableModel tableModel = new MenuItemTableModel(
+                        new ArrayList<>(customerOrderModel.getCustomerOrder().getMenuItemSelections().keySet()));
+                JTable orderTable = new JTable(tableModel);
+                orderTable.setGridColor(Color.GRAY);
+                customerOrderView.displayOrderTable(orderTable);
             } else customerOrderView.showErrorDialog("Hi "+ customerOrderView.getCustomerName()+"\nPlease order at least one food or beverage", "Order Menu");
         }
     }
@@ -120,9 +122,6 @@ public class CustomerOrderController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-//            Order newOrder = new Order();
-//        
-//            newOrder.addItem(menuItem);
             System.exit(0);
         }
         
