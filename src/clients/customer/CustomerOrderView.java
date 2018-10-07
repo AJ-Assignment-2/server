@@ -46,18 +46,9 @@ public class CustomerOrderView extends JFrame{
     private JComboBox<String> foodComboBox;
     private JLabel beverageLabel;
     private JComboBox<String> beverageComboBox;
-    
-    
-    private JPanel centrePanel;
-    private Object row[];
-    private JPanel tablePanel;
-    private JTable orderTable;
-    private DefaultTableModel model;
-    private JScrollPane jScrollPane;
 
     private JScrollPane orderTableScrollPane;
-    
-    
+
     private JPanel southPanel;
     
     private JPanel buttonPanel;
