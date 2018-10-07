@@ -1,9 +1,11 @@
 package model.MenuItem;
 
+import java.io.Serializable;
+
 /**
  * Object to represent a single menu item.
  */
-public class MenuItem {
+public class MenuItem implements Serializable {
     private String name;
     private MenuItemType type;
     private MenuItemCategory category;

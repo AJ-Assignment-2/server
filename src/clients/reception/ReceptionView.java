@@ -29,7 +29,7 @@ import javax.swing.border.Border;
  *
  * @author Imanuel
  */
-public class ReceptionistScreenView extends JFrame {
+public class ReceptionView extends JFrame {
     private JMenuBar menuBar;
     private JMenu menuFile;
     private JMenuItem menuAbout;
@@ -60,7 +60,7 @@ public class ReceptionistScreenView extends JFrame {
     
     private String[][] labels={{"Customer Details"}, {"Order Status"}, {"Command Buttons"}};
     
-    public ReceptionistScreenView(){
+    public ReceptionView(){
         this.menuBar=new JMenuBar();
         this.menuFile=new JMenu("File");
         this.menuAbout=new JMenuItem("About");
@@ -124,8 +124,8 @@ public class ReceptionistScreenView extends JFrame {
     
     public void setupComboBox(){
         selectedTableNumber.addItem("Select table number");
-        for(int i=0;i<9;i++){
-            selectedTableNumber.addItem(""+(i+1));
+        for(int i=1;i<9;i++){
+            selectedTableNumber.addItem(i);
         }
     }
     
@@ -158,6 +158,6 @@ public class ReceptionistScreenView extends JFrame {
     }
     
     public String getTableNumber(){
-        return selectedTableNumber.getName();
+        return String.valueOf(selectedTableNumber.getSelectedItem());
     }
 }

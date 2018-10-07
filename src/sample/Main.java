@@ -28,7 +28,7 @@ public class Main extends Application {
     }
     
     public static void main(String[] args) {
-        MenuItemDao menuItemAccessor = new MenuItemAccessor();
+        MenuItemDao menuItemAccessor = new MenuItemAccessor(null);
         Order testOrder = new Order();
 
         // Add two of each menu item to the test order.
@@ -47,23 +47,23 @@ public class Main extends Application {
             System.out.println("Customer requires " + entry.getValue() + " of the: " + entry.getKey().getName());
         });
 
-        OrderDao orderAccessor = new OrderAccessor();
-        orderAccessor.createOrder(testOrder); // Store the order in the database.
-
-        // Confirm the order was stored correctly and can be retrieved correctly by retrieving it from the database.
-        List<Order> allOrders = orderAccessor.getAllOrders();
-        System.out.println("There are/is " + allOrders.size() + " orders in the database.");
-        System.out.println("Printing all orders to the console: \n");
-        for (Order order : allOrders) {
-            System.out.println("Order for " + order.getCustomerName() + " sitting at table " + order.getTableNumber());
-            System.out.println("The order contains: ");
-
-            // Loop through all of the Order's menu items. The value of the HashMap represents the quantity of item.
-            order.getMenuItemSelections().entrySet().forEach(entry ->
-                System.out.println(entry.getValue() + " of the: " + entry.getKey().getName()));
-
-            System.out.println("\n");
-        }
+//        OrderDao orderAccessor = new OrderAccessor();
+//        orderAccessor.createOrder(testOrder); // Store the order in the database.
+//
+//        // Confirm the order was stored correctly and can be retrieved correctly by retrieving it from the database.
+//        List<Order> allOrders = orderAccessor.getAllOrders();
+//        System.out.println("There are/is " + allOrders.size() + " orders in the database.");
+//        System.out.println("Printing all orders to the console: \n");
+//        for (Order order : allOrders) {
+//            System.out.println("Order for " + order.getCustomerName() + " sitting at table " + order.getTableNumber());
+//            System.out.println("The order contains: ");
+//
+//            // Loop through all of the Order's menu items. The value of the HashMap represents the quantity of item.
+//            order.getMenuItemSelections().entrySet().forEach(entry ->
+//                System.out.println(entry.getValue() + " of the: " + entry.getKey().getName()));
+//
+//            System.out.println("\n");
+//        }
         launch(args);
     }
 }

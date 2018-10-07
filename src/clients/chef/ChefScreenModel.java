@@ -10,6 +10,7 @@ package clients.chef;
  * @author Imanuel
  */
 public class ChefScreenModel {
+
     public ChefScreenModel(){
         
     }

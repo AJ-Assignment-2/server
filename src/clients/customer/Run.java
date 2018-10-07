@@ -6,11 +6,11 @@ package clients.customer;
  */
 public class Run {
     public static void main(String[] args){
-        RestaurantOrderView restaurantOrderView=new RestaurantOrderView();
-        RestaurantOrderModel restaurantOrderModel=new RestaurantOrderModel();
-        RestaurantOrderController restaurantOrderController=new RestaurantOrderController(restaurantOrderView, restaurantOrderModel);
-        restaurantOrderView.setTitle("Restaurant Order");
-        restaurantOrderView.setSize(900,500);
-        restaurantOrderView.setVisible(true);
+        CustomerOrderView customerOrderView =new CustomerOrderView();
+        CustomerOrderModel customerOrderModel =new CustomerOrderModel();
+        CustomerOrderController customerOrderController =new CustomerOrderController(customerOrderView, customerOrderModel);
+        customerOrderView.setTitle("Restaurant Order");
+        customerOrderView.setSize(900,500);
+        customerOrderView.setVisible(true);
     }
 }

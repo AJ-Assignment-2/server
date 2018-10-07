@@ -9,21 +9,13 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import model.MenuItem.MenuItem;
+import model.MenuItem.MenuItemCategory;
+import model.MenuItem.MenuItemType;
+
 import static model.MenuItem.MenuItemCategory.BEVERAGE;
 import static model.MenuItem.MenuItemCategory.FOOD;
 
@@ -31,8 +23,8 @@ import static model.MenuItem.MenuItemCategory.FOOD;
  *
  * @author Imanuel
  */
-public class RestaurantOrderView extends JFrame{
-    private RestaurantOrderModel restaurantOrderModel;
+public class CustomerOrderView extends JFrame{
+    private CustomerOrderModel customerOrderModel;
     
     private Border border;
     private JPanel northPanel;
@@ -82,8 +74,8 @@ public class RestaurantOrderView extends JFrame{
     
     private String[][] labels={{"Customer Details"}, {"Choose Menu Items"}, {"Menu Choices and Nutrition Information"}, {"Customer Order"}, {"Command Buttons"}};
     
-    public RestaurantOrderView(){
-        this.restaurantOrderModel=new RestaurantOrderModel();
+    public CustomerOrderView(){
+        this.customerOrderModel =new CustomerOrderModel();
         border=BorderFactory.createLineBorder(Color.BLACK);
         
         northPanel=new JPanel();
@@ -113,7 +105,7 @@ public class RestaurantOrderView extends JFrame{
         foodComboBox=new JComboBox<>();
         foodComboBox.addItem("-------- Select the food --------");
         beverageLabel=new JLabel("Beverage");
-        beverageComboBox=new JComboBox<>();
+        beverageComboBox = new JComboBox<>();
         beverageComboBox.addItem("-------- Select the beverage --------");
 
         
@@ -207,19 +199,6 @@ public class RestaurantOrderView extends JFrame{
         quitButton.addActionListener(quitButtonListener);
     }
     
-    public void addItemComboBox(List<MenuItem> foodMenu, List<MenuItem> beverageMenu){
-        foodComboBox.removeAllItems();
-        beverageComboBox.removeAllItems();
-        foodComboBox.addItem("-------- Select the food --------");
-        beverageComboBox.addItem("-------- Select the beverage --------");
-        for (MenuItem food : foodMenu) {
-            foodComboBox.addItem(food.getName());
-        }
-        for (MenuItem beverage : beverageMenu) {
-            beverageComboBox.addItem(beverage.getName());
-        }
-    }
-    
     public String getCustomerName(){
         return nameLabel.getText();
     }
@@ -227,7 +206,15 @@ public class RestaurantOrderView extends JFrame{
     public String getCustomerTable(){
         return tableNumberLabel.getText();
     }
-    
+
+    public JComboBox<String> getFoodComboBox() {
+        return foodComboBox;
+    }
+
+    public JComboBox<String> getBeverageComboBox() {
+        return beverageComboBox;
+    }
+
     public String getChosenFood(){
         return foodComboBox.getSelectedItem().toString();
     }
@@ -249,7 +236,7 @@ public class RestaurantOrderView extends JFrame{
         row=new Object[7];
         model=(DefaultTableModel) orderTable.getModel();
         if(foodComboBox.getSelectedIndex()!=0 && beverageComboBox.getSelectedIndex()!=0){
-            for(MenuItem menu: restaurantOrderModel.getMenuWithCategory(FOOD)){
+            for(MenuItem menu: customerOrderModel.getMenuWithCategory(FOOD)){
                 if(menu.getName().equals(selectedFood)){
                     row[0]=menu.getName();
                     row[1]=menu.getEnergy();
@@ -261,7 +248,7 @@ public class RestaurantOrderView extends JFrame{
                     model.addRow(row);
                 }
             }
-            for(MenuItem menu: restaurantOrderModel.getMenuWithCategory(BEVERAGE)){
+            for(MenuItem menu: customerOrderModel.getMenuWithCategory(BEVERAGE)){
                 if(menu.getName().equals(selectedBeverage)){
                     row[0]=menu.getName();
                     row[1]=menu.getEnergy();
@@ -274,7 +261,7 @@ public class RestaurantOrderView extends JFrame{
                 }
             }
         }else if(foodComboBox.getSelectedIndex()!=0){
-            for(MenuItem menu: restaurantOrderModel.getMenuWithCategory(FOOD)){
+            for(MenuItem menu: customerOrderModel.getMenuWithCategory(FOOD)){
                 if(menu.getName().equals(selectedFood)){
                     row[0]=menu.getName();
                     row[1]=menu.getEnergy();
@@ -287,7 +274,7 @@ public class RestaurantOrderView extends JFrame{
                 }
             }
         }else if(beverageComboBox.getSelectedIndex()!=0){
-            for(MenuItem menu: restaurantOrderModel.getMenuWithCategory(BEVERAGE)){
+            for(MenuItem menu: customerOrderModel.getMenuWithCategory(BEVERAGE)){
                 if(menu.getName().equals(selectedBeverage)){
                     row[0]=menu.getName();
                     row[1]=menu.getEnergy();

@@ -6,11 +6,11 @@ package clients.reception;
  */
 public class Run {
     public static void main(String[] args){
-        ReceptionistScreenView receptionistScreenView=new ReceptionistScreenView();
-        ReceptionistScreenModel receptionistScreenModel=new ReceptionistScreenModel();
-        ReceptionistScreenController receptionistScreenController=new ReceptionistScreenController(receptionistScreenView, receptionistScreenModel);
-        receptionistScreenView.setTitle("Restaurant Reception");
-        receptionistScreenView.setSize(750,400);
-        receptionistScreenView.setVisible(true);
+        ReceptionView receptionView =new ReceptionView();
+        ReceptionModel receptionModel =new ReceptionModel();
+        ReceptionController receptionController =new ReceptionController(receptionView, receptionModel);
+        receptionView.setTitle("Restaurant Reception");
+        receptionView.setSize(750,400);
+        receptionView.setVisible(true);
     }
 }
