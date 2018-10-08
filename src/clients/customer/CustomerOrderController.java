@@ -81,21 +81,25 @@ public class CustomerOrderController {
     }
     
     class DisplayChoicesButtonListener implements ActionListener{
-
         @Override
         public void actionPerformed(ActionEvent e) {
-            String chosenFood= customerOrderView.getChosenFood();
-            String chosenBeverage= customerOrderView.getChosenBeverage();
-            if(!chosenFood.equals("-------- Select the food --------") || !chosenBeverage.equals("-------- Select the beverage --------")){
-                //customerOrderView.displayDetailsChoices();
-                
-            } else customerOrderView.showErrorDialog("Hi "+ customerOrderView.getCustomerName()+"\nPlease select food and beverage", "Select Menu");
+            try {
+                List<MenuItem> focusedItems = new ArrayList<>();
+                focusedItems.add((MenuItem)customerOrderView.getFoodComboBox().getSelectedItem());
+                focusedItems.add((MenuItem)customerOrderView.getBeverageComboBox().getSelectedItem());
+
+                MenuItemTableModel tableModel = new MenuItemTableModel(focusedItems);
+                JTable orderTable = new JTable(tableModel);
+                orderTable.setGridColor(Color.GRAY);
+                customerOrderView.displayOrderTable(orderTable);
+            } catch (ClassCastException exception) {
+                customerOrderView.showErrorDialog("Hi "+ customerOrderView.getCustomerName()+"\nPlease select a valid food and beverage", "Select Menu");
+            }
         }
         
     }
     
     class DisplayOrderButtonListener implements ActionListener{
-
         @Override
         public void actionPerformed(ActionEvent e) {
             if(!customerOrderModel.getCustomerOrder().getMenuItemSelections().isEmpty()){
@@ -110,7 +114,6 @@ public class CustomerOrderController {
     }
     
     class ClearButtonListener implements ActionListener{
-
         @Override
         public void actionPerformed(ActionEvent e) {
             customerOrderView.setResetScreen();
