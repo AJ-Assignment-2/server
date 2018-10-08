@@ -51,15 +51,8 @@ public class MenuItemAccessor implements MenuItemDao {
      * Connect to the database, create the menu item table if it does not exist
      * and populate the table if it contains no records.
      */
-    public MenuItemAccessor() {
-        Connection attemptedConnection = null;
-        try {
-            attemptedConnection = DriverManager.getConnection("jdbc:derby:RestaurantOrderingDB;create=true");
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, e.toString(), e);
-        }
-        connection = attemptedConnection;
-
+    public MenuItemAccessor(Connection connection) {
+        this.connection = connection;
         createMenuItemTable();
 
         if (readMenuItems().isEmpty()) {

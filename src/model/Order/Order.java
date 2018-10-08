@@ -2,12 +2,13 @@ package model.Order;
 
 import model.MenuItem.MenuItem;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 /**
  * Represents a customer's order with menu items.
  */
-public class Order {
+public class Order implements Serializable {
     private int id;
     private String customerName;
     private HashMap<MenuItem, Integer> menuItemSelections;
