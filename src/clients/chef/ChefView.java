@@ -22,7 +22,7 @@ import javax.swing.border.Border;
  *
  * @author Imanuel
  */
-public class ChefScreenView extends JFrame{
+public class ChefView extends JFrame{
     private Border border;
     
     private JPanel centerPanel;
@@ -40,7 +40,7 @@ public class ChefScreenView extends JFrame{
     private JPanel southPanel;
     private JButton prepareButton;
     
-    public ChefScreenView(){
+    public ChefView(){
         border=BorderFactory.createLineBorder(Color.BLACK);
                 
         centerPanel=new JPanel();

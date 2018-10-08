@@ -37,7 +37,6 @@ public class CustomerOrderModel implements ObservableCustomerOrderModel{
         try {
             customerService = (CustomerService) Naming.lookup("rmi://127.0.0.1/Customer");
             menuItems = customerService.getMenuItems();
-
         } catch (Exception e) {
             LOGGER.log(Level.SEVERE, "Cannot connect to customer RMI service", e);
         }
