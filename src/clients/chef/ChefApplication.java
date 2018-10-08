@@ -6,11 +6,11 @@ package clients.chef;
  */
 public class ChefApplication {
     public static void main(String[] args){
-        ChefScreenView chefScreenView=new ChefScreenView();
-        ChefScreenModel chefScreenModel=new ChefScreenModel();
-        ChefScreenController chefScreenController=new ChefScreenController(chefScreenView, chefScreenModel);
-        chefScreenView.setTitle("Chef Screen Status");
-        chefScreenView.setSize(1200,300);
-        chefScreenView.setVisible(true);
+        ChefView chefView =new ChefView();
+        ChefModel chefModel =new ChefModel();
+        ChefController chefController =new ChefController(chefView, chefModel);
+        chefView.setTitle("Chef Screen Status");
+        chefView.setSize(1200,300);
+        chefView.setVisible(true);
     }
 }
