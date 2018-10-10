@@ -4,16 +4,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import model.MenuItem.MenuItem;
 import static model.MenuItem.MenuItemCategory.BEVERAGE;
 import static model.MenuItem.MenuItemCategory.FOOD;
+
+import model.MenuItem.MenuItemTableModel;
 import model.MenuItem.MenuItemType;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

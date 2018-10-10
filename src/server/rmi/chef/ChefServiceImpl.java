@@ -25,15 +25,14 @@ public class ChefServiceImpl extends UnicastRemoteObject implements ChefService 
     }
 
     @Override
-    public List<Order> getWaitingOrders() throws RemoteException {
+    public List<Order> getAllOrders() throws RemoteException {
         try {
             LOGGER.log(Level.INFO,
                     "(" + RemoteServer.getClientHost() + ") Incoming Request: Retrieving all orders with the WAITING state");
         } catch (ServerNotActiveException e) {
             LOGGER.log(Level.SEVERE, "RMI server has shut down!", e);
         }
-        return orderAccessor.getAllOrders().stream().filter(order -> order.getState() == OrderState.WAITING)
-                .collect(Collectors.toList());
+        return orderAccessor.getAllOrders();
     }
 
     @Override
