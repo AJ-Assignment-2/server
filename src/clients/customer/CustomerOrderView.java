@@ -1,6 +1,5 @@
 package clients.customer;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,7 +22,8 @@ import static model.MenuItem.MenuItemCategory.FOOD;
  *
  * @author Imanuel
  */
-public class CustomerOrderView extends JFrame{
+public class CustomerOrderView extends JFrame {
+
     private Border border;
     private JPanel northPanel;
     private JLabel menuTitleLabel;
@@ -32,9 +32,9 @@ public class CustomerOrderView extends JFrame{
     private JPanel customerTablePanel;
     private JPanel mealPanel;
     private JLabel customerNameLabel;
-    private JLabel nameLabel;
+    private JTextArea nameTextArea;
     private JLabel customerTableNumberLabel;
-    private JLabel tableNumberLabel;
+    private JComboBox tableNumberList;
     private JLabel mealType;
     private JRadioButton breakfastRadioButton;
     private JRadioButton lunchRadioButton;
@@ -47,67 +47,65 @@ public class CustomerOrderView extends JFrame{
     private JLabel beverageLabel;
     private JComboBox<String> beverageComboBox;
 
-
     private JPanel centrePanel;
 
     private JScrollPane orderTableScrollPane;
 
-
     private JPanel southPanel;
-    
+
     private JPanel buttonPanel;
     private JButton enterDataButton;
+    private JButton submitOrderButton;
     private JButton displayChoicesButton;
     private JButton displayOrderButton;
     private JButton clearDisplayButton;
     private JButton quitButton;
-    
-    private String[][] labels={{"Customer Details"}, {"Choose Menu Items"}, {"Menu Choices and Nutrition Information"}, {"Customer Order"}, {"Command Buttons"}};
-    
-    public CustomerOrderView(){
-        border=BorderFactory.createLineBorder(Color.BLACK);
-        
-        northPanel=new JPanel();
-        menuTitleLabel=new JLabel();
+
+    private String[][] labels = {{"Customer Details"}, {"Choose Menu Items"}, {"Menu Choices and Nutrition Information"}, {"Customer Order"}, {"Command Buttons"}};
+
+    public CustomerOrderView() {
+        border = BorderFactory.createLineBorder(Color.BLACK);
+
+        northPanel = new JPanel();
+        menuTitleLabel = new JLabel();
         menuTitleLabel.setFont(new Font("Arial", Font.BOLD, 26));
         menuTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         menuTitleLabel.setText("Welcome to Restaurant");
-        customerDetailsPanel=new JPanel();
+        customerDetailsPanel = new JPanel();
         customerDetailsPanel.setBorder(BorderFactory.createTitledBorder(labels[0][0]));
-        customerNamePanel=new JPanel();
-        customerTablePanel=new JPanel();
-        mealPanel=new JPanel();
-        customerNameLabel=new JLabel("Customer Name: ");
-        nameLabel=new JLabel();
-        customerTableNumberLabel=new JLabel("Table Number: ");
-        tableNumberLabel=new JLabel();
-        setupCustomerNameAndTableNumber();
-        mealType=new JLabel("Meal Type: ");
-        breakfastRadioButton=new JRadioButton("Breakfast");
-        lunchRadioButton=new JRadioButton("Lunch");
-        dinnerRadioButton=new JRadioButton("Dinner");
-        radioButtonGroup=new ButtonGroup();
-        
-        chooseMenuItemsPanel=new JPanel();       
+        customerNamePanel = new JPanel();
+        customerTablePanel = new JPanel();
+        mealPanel = new JPanel();
+        customerNameLabel = new JLabel("Customer Name: ");
+        nameTextArea = new JTextArea(1, 10);
+        nameTextArea.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
+        customerTableNumberLabel = new JLabel("Table Number: ");
+        tableNumberList = new JComboBox(getTableNumber());
+        mealType = new JLabel("Meal Type: ");
+        breakfastRadioButton = new JRadioButton("Breakfast");
+        lunchRadioButton = new JRadioButton("Lunch");
+        dinnerRadioButton = new JRadioButton("Dinner");
+        radioButtonGroup = new ButtonGroup();
+
+        chooseMenuItemsPanel = new JPanel();
         chooseMenuItemsPanel.setBorder(BorderFactory.createTitledBorder(labels[1][0]));
-        foodLabel=new JLabel("Food");
-        foodComboBox=new JComboBox<>();
+        foodLabel = new JLabel("Food");
+        foodComboBox = new JComboBox<>();
         foodComboBox.addItem("-------- Select the food --------");
-        beverageLabel=new JLabel("Beverage");
+        beverageLabel = new JLabel("Beverage");
         beverageComboBox = new JComboBox<>();
         beverageComboBox.addItem("-------- Select the beverage --------");
 
-        
         northPanel.setLayout(new BoxLayout(northPanel, BoxLayout.Y_AXIS));
-        customerDetailsPanel.setLayout(new GridLayout(1,3));
-        
+        customerDetailsPanel.setLayout(new GridLayout(1, 3));
+
         customerNamePanel.add(customerNameLabel);
-        customerNamePanel.add(nameLabel);
+        customerNamePanel.add(nameTextArea);
         customerTablePanel.add(customerTableNumberLabel);
-        customerTablePanel.add(tableNumberLabel);
+        customerTablePanel.add(tableNumberList);
         radioButtonGroup.add(breakfastRadioButton);
         radioButtonGroup.add(lunchRadioButton);
-        radioButtonGroup.add(dinnerRadioButton);        
+        radioButtonGroup.add(dinnerRadioButton);
         mealPanel.add(mealType);
         mealPanel.add(breakfastRadioButton);
         mealPanel.add(lunchRadioButton);
@@ -116,83 +114,91 @@ public class CustomerOrderView extends JFrame{
         customerDetailsPanel.add(customerTablePanel);
         customerDetailsPanel.add(mealPanel);
 
-        
         chooseMenuItemsPanel.add(foodLabel);
         chooseMenuItemsPanel.add(foodComboBox);
         chooseMenuItemsPanel.add(beverageLabel);
         chooseMenuItemsPanel.add(beverageComboBox);
-        
+
         northPanel.add(menuTitleLabel);
         northPanel.add(customerDetailsPanel);
         northPanel.add(chooseMenuItemsPanel);
 
-        southPanel=new JPanel();
+        southPanel = new JPanel();
         southPanel.setLayout(new BorderLayout());
-        buttonPanel=new JPanel();
+        buttonPanel = new JPanel();
         buttonPanel.setBorder(BorderFactory.createTitledBorder(labels[4][0]));
-        enterDataButton=new JButton("Enter Data");
-        displayChoicesButton=new JButton("Display Choices");
-        displayOrderButton=new JButton("Display Order");
-        clearDisplayButton=new JButton("Clear Display");
+        enterDataButton = new JButton("Enter Data");
+        displayChoicesButton = new JButton("Display Choices");
+        displayOrderButton = new JButton("Display Order");
+        clearDisplayButton = new JButton("Clear Display");
+        submitOrderButton = new JButton("Submit Order");
         clearDisplayButton.setEnabled(false);
-        quitButton=new JButton("Exit");
-        
-        buttonPanel.setLayout(new GridLayout(1,7, 10, 10));
+        quitButton = new JButton("Exit");
+
+        buttonPanel.setLayout(new GridLayout(1, 7, 10, 10));
         buttonPanel.add(enterDataButton);
         buttonPanel.add(displayChoicesButton);
         buttonPanel.add(displayOrderButton);
         buttonPanel.add(clearDisplayButton);
+        buttonPanel.add(submitOrderButton);
         buttonPanel.add(quitButton);
         southPanel.add(buttonPanel, BorderLayout.SOUTH);
-        
-        
+
         this.add(northPanel, BorderLayout.NORTH);
         this.add(southPanel, BorderLayout.SOUTH);
     }
-    
-    public void setupCustomerNameAndTableNumber(){
-        nameLabel.setText("Unknown"); // Get from server
-        tableNumberLabel.setText("00000000"); // Get from server
+
+    public Object[] getTableNumber() {
+        ArrayList<String> s = new ArrayList<>();
+        s.add("Select Table Number");
+        for(int i=0;i<12;i++) {
+            s.add(""+(i+1));
+        }
+        return s.toArray();
     }
     
-    public void addBreakfastRadioButtonListener(ActionListener breakfastRadioButtonListener){
+    public void addBreakfastRadioButtonListener(ActionListener breakfastRadioButtonListener) {
         breakfastRadioButton.addActionListener(breakfastRadioButtonListener);
     }
-    
-    public void addLunchRadioButtonListener(ActionListener lunchRadioButtonListener){
+
+    public void addLunchRadioButtonListener(ActionListener lunchRadioButtonListener) {
         lunchRadioButton.addActionListener(lunchRadioButtonListener);
     }
-    
-    public void addDinnerRadioButtonListener(ActionListener dinnerRadioButtonListener){
+
+    public void addDinnerRadioButtonListener(ActionListener dinnerRadioButtonListener) {
         dinnerRadioButton.addActionListener(dinnerRadioButtonListener);
     }
-    
-    public void addEnterDataButtonListener(ActionListener enterDataButtonListener){
+
+    public void addEnterDataButtonListener(ActionListener enterDataButtonListener) {
         enterDataButton.addActionListener(enterDataButtonListener);
     }
-    
-    public void addDisplayChoicesButtonListener(ActionListener displayChoicesButtonListener){
+
+    public void addDisplayChoicesButtonListener(ActionListener displayChoicesButtonListener) {
         displayChoicesButton.addActionListener(displayChoicesButtonListener);
     }
-    
-    public void addDisplayOrderButtonListener(ActionListener displayOrderButtonListener){
+
+    public void addDisplayOrderButtonListener(ActionListener displayOrderButtonListener) {
         displayOrderButton.addActionListener(displayOrderButtonListener);
     }
-    
-    public void addClearDisplayButtonListener(ActionListener clearDisplayButtonListener){
+
+    public void addClearDisplayButtonListener(ActionListener clearDisplayButtonListener) {
         clearDisplayButton.addActionListener(clearDisplayButtonListener);
     }
     
-    public void addQuitButtonListener(ActionListener quitButtonListener){
+    public void addSubmitOrderButtonListener(ActionListener submitOrderButtonListener) {
+        submitOrderButton.addActionListener(submitOrderButtonListener);
+    }
+
+    public void addQuitButtonListener(ActionListener quitButtonListener) {
         quitButton.addActionListener(quitButtonListener);
     }
-    
-    public String getCustomerName(){
-        return nameLabel.getText();
+
+    public String getCustomerName() {
+        return nameTextArea.getText();
     }
-    
-    public String getCustomerTable(){
-        return tableNumberLabel.getText();
+
+    public String getCustomerTable() {
+        return tableNumberList.getSelectedItem().toString();
     }
 
     public JComboBox<String> getFoodComboBox() {
@@ -203,19 +209,19 @@ public class CustomerOrderView extends JFrame{
         return beverageComboBox;
     }
 
-    public String getChosenFood(){
+    public String getChosenFood() {
         return foodComboBox.getSelectedItem().toString();
     }
-    
-    public String getChosenBeverage(){
+
+    public String getChosenBeverage() {
         return beverageComboBox.getSelectedItem().toString();
     }
-    
-    public void showErrorDialog(String information, String titleDialog){
-        JOptionPane.showMessageDialog(this,information,titleDialog,JOptionPane.ERROR_MESSAGE);
+
+    public void showErrorDialog(String information, String titleDialog) {
+        JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.ERROR_MESSAGE);
     }
-    
-    public void setResetScreen(){
+
+    public void setResetScreen() {
         radioButtonGroup.clearSelection();
         foodComboBox.removeAllItems();
         beverageComboBox.removeAllItems();
@@ -226,9 +232,16 @@ public class CustomerOrderView extends JFrame{
         this.getContentPane().validate();
         clearDisplayButton.setEnabled(false);
     }
+    
+    public void setDisableInputNameAndTable() {
+        nameTextArea.setEditable(false);
+        tableNumberList.setEnabled(false);
+    }
 
     public void displayOrderTable(JTable table) {
-        if (orderTableScrollPane != null) this.northPanel.remove(orderTableScrollPane);
+        if (orderTableScrollPane != null) {
+            this.northPanel.remove(orderTableScrollPane);
+        }
         revalidate();
         repaint();
         orderTableScrollPane = new JScrollPane(table);
