@@ -5,5 +5,5 @@ import model.Order.Order;
 import java.util.List;
 
 public interface ReceptionModelObserver {
-    void ordersReceivedFromServer(List<Order> orders);
+    void ordersReceivedFromServer(List<Order> servedOrders, List<Order> billedOrders);
 }

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -28,21 +29,25 @@ public class ReceptionModel implements ObservableReceptionModel {
 
     private ReceptionService receptionService;
     private List<Order> servedOrders;
+    private List<Order> billedOrders;
 
     public ReceptionModel() {
         observers = new ArrayList<>();
+        servedOrders = new ArrayList<>();
+        billedOrders = new ArrayList<>();
         try {
             receptionService = (ReceptionService) Naming.lookup("rmi://127.0.0.1/Reception");
 
             new Thread(() -> {
-                try {
-                    servedOrders = receptionService.getPreparedOrders();
-                    notifyOrdersUpdated();
-                    Thread.sleep(500);
-                } catch (RemoteException e) {
-                    LOGGER.log(Level.WARNING, "Attempt to retrieve orders through RMI failed", e);
-                } catch (InterruptedException e) {
-                    LOGGER.log(Level.WARNING, "Error sleeping thread", e);
+                while (true) {
+                    try {
+                        setOrders(receptionService.getOrders());
+                        Thread.sleep(10000);
+                    } catch (RemoteException e) {
+                        LOGGER.log(Level.WARNING, "Attempt to retrieve orders through RMI failed", e);
+                    } catch (InterruptedException e) {
+                        LOGGER.log(Level.WARNING, "Error sleeping thread", e);
+                    }
                 }
             }).start();
 
@@ -53,7 +58,33 @@ public class ReceptionModel implements ObservableReceptionModel {
 
     private void notifyOrdersUpdated() {
         for (ReceptionModelObserver observer : observers) {
-            observer.ordersReceivedFromServer(servedOrders);
+            observer.ordersReceivedFromServer(this.servedOrders, this.billedOrders);
+        }
+    }
+
+    private void setOrders(List<Order> orders) {
+        servedOrders.clear();
+        billedOrders.clear();
+
+        orders.stream().forEach(order -> {
+            switch (order.getState()) {
+                case SERVED:
+                    servedOrders.add(order);
+                    break;
+                case BILLED:
+                    billedOrders.add(order);
+                    break;
+            }
+        });
+
+        notifyOrdersUpdated();
+    }
+
+    public void updateSelectedOrder(Order order) {
+        try {
+            receptionService.billOrder(order.getId());
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, "Failed to send update command to RMI Server!", e);
         }
     }
     

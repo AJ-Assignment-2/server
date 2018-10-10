@@ -176,7 +176,7 @@ public class OrderAccessor implements OrderDao {
             Statement statement = connection.createStatement();
             statement.execute(CREATE_TABLE);
         } catch (Exception e) {
-            LOGGER.log(Level.INFO, "Order table is probably already created");
+            LOGGER.log(Level.OFF, "Order table is probably already created");
         }
     }
 
@@ -192,7 +192,22 @@ public class OrderAccessor implements OrderDao {
                     "quantity INTEGER )";
             statement.execute(orderItemTableSql);
         } catch (Exception e) {
-            LOGGER.log(Level.INFO, "RestaurantOrderItem table is probably already created");
+            LOGGER.log(Level.OFF, "RestaurantOrderItem table is probably already created");
         }
+    }
+
+    @Override
+    public void setOrderState(OrderState state, int orderId) {
+        try {
+            String test = state.toString();
+            Statement statement = connection.createStatement();
+            String updateStateSql = "UPDATE " + TABLE_NAME + " SET " + COLUMN_STATE + " = '" + state.toString() +
+                    "' WHERE " + COLUMN_ID + " = " + orderId;
+
+            statement.execute(updateStateSql);
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Unable to update order state to " + state.toString() + ": ", e);
+        }
+
     }
 }

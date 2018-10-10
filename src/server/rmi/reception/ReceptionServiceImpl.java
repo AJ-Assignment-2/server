@@ -25,12 +25,19 @@ public class ReceptionServiceImpl extends UnicastRemoteObject implements Recepti
     }
 
     @Override
-    public void billOrder(Order order) {
-        // TODO: Write a method in the OrderAccessor class that changes a given orders status and call it here.
+    public void billOrder(int orderId) {
+        try {
+            LOGGER.log(Level.INFO,
+                    "(" + RemoteServer.getClientHost() + ") Incoming Request: Updating order state");
+        } catch (ServerNotActiveException e) {
+            LOGGER.log(Level.SEVERE, "RMI server has shut down!", e);
+        }
+
+        orderAccessor.setOrderState(OrderState.BILLED, orderId);
     }
 
     @Override
-    public List<Order> getPreparedOrders() throws RemoteException {
+    public List<Order> getOrders() throws RemoteException {
         try {
             LOGGER.log(Level.INFO,
                     "(" + RemoteServer.getClientHost() + ") Incoming Request: Retrieving prepared orders");
@@ -38,7 +45,6 @@ public class ReceptionServiceImpl extends UnicastRemoteObject implements Recepti
             LOGGER.log(Level.SEVERE, "RMI server has shut down!", e);
         }
 
-        return orderAccessor.getAllOrders().stream().filter(order -> order.getState() == OrderState.SERVED)
-                .collect(Collectors.toList());
+        return orderAccessor.getAllOrders();
     }
 }
