@@ -26,7 +26,6 @@ public class ReceptionController implements ReceptionModelObserver {
         this.receptionModel.addReceptionModelObserver(this);
         
         this.receptionView.addMenuAboutListener(new MenuAboutListener());
-        this.receptionView.addCustomerButtonListener(new AddCustomerButtonListener());
         this.receptionView.addBillButtonListener(new BillButtonListener());
         this.receptionView.addExitButtonListener(new ExitButtonListener());
     }
@@ -44,30 +43,15 @@ public class ReceptionController implements ReceptionModelObserver {
         }
     }
     
-    private class AddCustomerButtonListener implements ActionListener{
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if(receptionView.getCustomerName().equals("") || receptionView.getTableNumber().equals("Select table number")){
-                receptionView.showErrorDialog("Please input name or select table number", "Input Customer Information");
-            } else {
-                Order order = new Order();
-                order.setCustomerName(receptionView.getCustomerName());
-                order.setTableNumber(Integer.parseInt(receptionView.getTableNumber()));
-                order.setState(OrderState.WAITING);
-               // receptionModel.submitOrder(order);
-            }
-        }
-        
-    }
-    
     private class BillButtonListener implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(receptionView.getCustomerName().equals("") || receptionView.getTableNumber().equals("Select table number")){
-                receptionView.showErrorDialog("Please input name or select table number", "Input Customer Information");
-            }
+//            Order order = new Order();
+//            order.setCustomerName(receptionView.getCustomerName());
+//            order.setTableNumber(Integer.parseInt(receptionView.getTableNumber()));
+//            order.setState(OrderState.WAITING);
+           // receptionModel.submitOrder(order);
         }
         
     }
