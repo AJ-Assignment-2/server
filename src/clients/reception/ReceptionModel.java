@@ -21,6 +21,7 @@ import java.util.logging.Logger;
  * @author Imanuel
  */
 public class ReceptionModel implements ObservableReceptionModel {
+
     private static final Logger LOGGER = Logger.getLogger(ReceptionModel.class.getName());
 
     private List<ReceptionModelObserver> observers;
@@ -28,7 +29,7 @@ public class ReceptionModel implements ObservableReceptionModel {
     private ReceptionService receptionService;
     private List<Order> servedOrders;
 
-    public ReceptionModel(){
+    public ReceptionModel() {
         observers = new ArrayList<>();
         try {
             receptionService = (ReceptionService) Naming.lookup("rmi://127.0.0.1/Reception");
@@ -55,7 +56,7 @@ public class ReceptionModel implements ObservableReceptionModel {
             observer.ordersReceivedFromServer(servedOrders);
         }
     }
-
+    
     @Override
     public void addReceptionModelObserver(ReceptionModelObserver observer) {
         this.observers.add(observer);
