@@ -10,15 +10,15 @@ import java.util.List;
 public interface ReceptionService extends Remote {
     /**
      * Change a given orders state to BILLED
-     * @param order The order to set to the BILLED status
+     * @param orderId The id of the order to update
      * @throws RemoteException
      */
-    void billOrder(Order order) throws RemoteException;
+    void billOrder(int orderId) throws RemoteException;
 
     /**
-     * Returns all orders in the database with the SERVED state
-     * @return All orders in the database that have the SERVED state
+     * Returns all orders in the database
+     * @return All orders in the database
      * @throws RemoteException
      */
-    List<Order> getPreparedOrders() throws RemoteException;
+    List<Order> getOrders() throws RemoteException;
 }

@@ -5,17 +5,14 @@
  */
 package clients.reception;
 
-import clients.customer.MenuItemTableModel;
+//import clients.customer.MenuItemTableModel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,10 +22,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.border.Border;
-import model.Order.Order;
-import static model.Order.OrderState.SERVED;
 
 /**
  *
@@ -45,23 +39,27 @@ public class ReceptionView extends JFrame {
     private JPanel northPanel;
 
     private JPanel centerPanel;
-    private JPanel servingOrdersPanel;
-    private JPanel billingOrdersPanel;
-    private JPanel servedBilledPanel;
+    private JPanel servedOrdersPanel;
+    private JPanel billedOrdersPanel;
+    private JPanel orderItemDetailsPanel;
     private JPanel orderStatusPanel;
+
     private JLabel servingOrders;
     private JLabel billingOrders;
     private JLabel orderHistory;
-//    private JTextArea servingOrdersTextArea;    ////////////////////////////////////////////////
-//    private JTextArea billingOrdersTextArea;    ////////////////////////////////////////////////
-//    private JTextArea orderHistoryTextArea;     ////////////////////////////////////////////////
-    private JScrollPane scrollableServingOrders;
-    private JScrollPane scrollableBillingOrders;
-    private JScrollPane scrollableOrderHistory;
+
+    private JTable servedOrdersTable;
+    private JTable billedOrdersTable;
+    private JTable orderItemDetailTable;
+
+    private JScrollPane servedOrdersTableContainer;
+    private JScrollPane billedOrdersTableContainer;
+    private JScrollPane orderItemDetailsContainer;
 
     private JPanel southPanel;
     private JButton billButton;
     private JButton exitButton;
+
 
     private String[][] labels = {{"Customer Details"}, {"Order Status"}, {"Command Buttons"}};
 
@@ -77,41 +75,50 @@ public class ReceptionView extends JFrame {
 
         northPanel = new JPanel();
 
-//        northPanel.add();
+        // Initialise JTables
+        servedOrdersTable = new JTable();
+        billedOrdersTable = new JTable();
+        orderItemDetailTable = new JTable();
+
         centerPanel = new JPanel();
-        servingOrdersPanel = new JPanel();
-        billingOrdersPanel = new JPanel();
-        servedBilledPanel = new JPanel(new BorderLayout());
-        servingOrdersPanel.setLayout(new BorderLayout());
-        billingOrdersPanel.setLayout(new BorderLayout());
+        servedOrdersPanel = new JPanel();
+        billedOrdersPanel = new JPanel();
+        orderItemDetailsPanel = new JPanel(new BorderLayout());
+        servedOrdersPanel.setLayout(new BorderLayout());
+        billedOrdersPanel.setLayout(new BorderLayout());
         orderStatusPanel = new JPanel(new BorderLayout());
         orderStatusPanel.setLayout(new GridLayout(1, 2, 50, 10));
         orderStatusPanel.setBorder(BorderFactory.createTitledBorder(labels[1][0]));
-        servingOrders = new JLabel("Orders with served state (No orders available to serve)");
-        billingOrders = new JLabel("Orders with billing state (No orders available to bill)");
-        orderHistory = new JLabel("All Orders have been processed");
+        servingOrders = new JLabel("Orders waiting to be billed");
+        billingOrders = new JLabel("Billed orders");
+        orderHistory = new JLabel("Selected order details");
         servingOrders.setHorizontalAlignment(JLabel.CENTER);
         billingOrders.setHorizontalAlignment(JLabel.CENTER);
         orderHistory.setHorizontalAlignment(JLabel.CENTER);
-        scrollableServingOrders = new JScrollPane(setupDefaultTable());
-        scrollableBillingOrders = new JScrollPane(setupDefaultTable());
-        scrollableOrderHistory = new JScrollPane(setupDefaultTable());
-        scrollableServingOrders.setPreferredSize(new Dimension(0, 200));
-        scrollableBillingOrders.setPreferredSize(new Dimension(0, 200));
-        scrollableOrderHistory.setPreferredSize(new Dimension(700, 200));
-        scrollableServingOrders.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollableBillingOrders.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        scrollableOrderHistory.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        servingOrdersPanel.add(servingOrders, BorderLayout.NORTH);
-        billingOrdersPanel.add(billingOrders, BorderLayout.NORTH);
-        servingOrdersPanel.add(scrollableServingOrders, BorderLayout.SOUTH);
-        billingOrdersPanel.add(scrollableBillingOrders, BorderLayout.SOUTH);
-        orderStatusPanel.add(servingOrdersPanel);
-        orderStatusPanel.add(billingOrdersPanel);
-        servedBilledPanel.add(orderHistory, BorderLayout.NORTH);
-        servedBilledPanel.add(scrollableOrderHistory, BorderLayout.SOUTH);
+
+        servedOrdersTableContainer = new JScrollPane(servedOrdersTable);
+        billedOrdersTableContainer = new JScrollPane(billedOrdersTable);
+        orderItemDetailsContainer = new JScrollPane(orderItemDetailTable);
+
+        servedOrdersTableContainer.setPreferredSize(new Dimension(0, 200));
+        billedOrdersTableContainer.setPreferredSize(new Dimension(0, 200));
+        orderItemDetailsContainer.setPreferredSize(new Dimension(700, 200));
+        servedOrdersTableContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        billedOrdersTableContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        orderItemDetailsContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        servedOrdersPanel.add(servingOrders, BorderLayout.NORTH);
+        billedOrdersPanel.add(billingOrders, BorderLayout.NORTH);
+        servedOrdersPanel.add(servedOrdersTableContainer, BorderLayout.SOUTH);
+        billedOrdersPanel.add(billedOrdersTableContainer, BorderLayout.SOUTH);
+        orderStatusPanel.add(servedOrdersPanel);
+        orderStatusPanel.add(billedOrdersPanel);
+
+        orderItemDetailsPanel.add(orderHistory, BorderLayout.NORTH);
+        orderItemDetailsPanel.add(orderItemDetailsContainer, BorderLayout.SOUTH);
+
         centerPanel.add(orderStatusPanel, BorderLayout.NORTH);
-        centerPanel.add(servedBilledPanel, BorderLayout.SOUTH);
+        centerPanel.add(orderItemDetailsContainer, BorderLayout.SOUTH);
 
         southPanel = new JPanel();
         billButton = new JButton("Bill");
@@ -135,18 +142,6 @@ public class ReceptionView extends JFrame {
         exitButton.addActionListener(exitButtonListener);
     }
 
-    public void setupServedTable() {
-        
-    }
-
-    public void setupBilledTable() {
-
-    }
-
-    public void setupItemsTable() {
-        
-    }
-
     public void showMessageDialog(String information, String titleDialog) {
         JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.INFORMATION_MESSAGE);
     }
@@ -155,11 +150,15 @@ public class ReceptionView extends JFrame {
         JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.ERROR_MESSAGE);
     }
 
-    public JTable setupDefaultTable() {
-        JTable defaultTable = new JTable();
-        return defaultTable;
+    public JTable getServedOrdersTable() {
+        return servedOrdersTable;
     }
-//    public String getTableNumber(){
-//        return String.valueOf(selectedTableNumber.getSelectedItem());
-//    }
+
+    public JTable getBilledOrdersTable() {
+        return billedOrdersTable;
+    }
+
+    public JTable getOrderItemDetailTable() {
+        return orderItemDetailTable;
+    }
 }

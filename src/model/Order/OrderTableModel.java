@@ -17,6 +17,14 @@ public class OrderTableModel extends AbstractTableModel {
         this.orders = orders;
     }
 
+    public Order getOrder(int row) {
+        if (orders != null) {
+            return orders.get(row);
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Returns the amount of columns.
      *
