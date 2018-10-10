@@ -12,7 +12,7 @@ public interface ChefService extends Remote {
      * @return All orders in the database having the WAITING state.
      * @throws RemoteException
      */
-    List<Order> getWaitingOrders() throws RemoteException;
+    List<Order> getAllOrders() throws RemoteException;
 
     /**
      * Change the given orders status to SERVED

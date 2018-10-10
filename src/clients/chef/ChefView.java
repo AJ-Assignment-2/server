@@ -5,24 +5,16 @@
  */
 package clients.chef;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 /**
  *
  * @author Imanuel
  */
-public class ChefScreenView extends JFrame{
+public class ChefView extends JFrame{
     private Border border;
     
     private JPanel centerPanel;
@@ -30,17 +22,18 @@ public class ChefScreenView extends JFrame{
     private JPanel waitingOrdersPanel;
     private JPanel servingOrdersPanel;
     private JLabel waitingOrders;
-    private JTextArea waitingOrdersTextArea;
-    private JScrollPane scrollableWaitingOrdersTextArea;
+    private JScrollPane waitingOrdersContainer;
     private JLabel servingOrders;
-    private JTextArea servingOrdersTextArea;
-    private JScrollPane scrollableServingOrdersTextArea;
+    private JScrollPane servedOrdersContainer;
+    private JTable servedOrdersTable;
+    private JTable waitingOrdersTable;
+    private JTable orderDetailsTable;
     
     
     private JPanel southPanel;
     private JButton prepareButton;
     
-    public ChefScreenView(){
+    public ChefView(){
         border=BorderFactory.createLineBorder(Color.BLACK);
                 
         centerPanel=new JPanel();
@@ -53,21 +46,23 @@ public class ChefScreenView extends JFrame{
         orderStatusPanel.setBorder(BorderFactory.createTitledBorder("Order Status"));
         waitingOrders=new JLabel("Orders with waiting state (No orders available to prepare)");
         waitingOrders.setHorizontalAlignment(JLabel.CENTER);
-        waitingOrdersTextArea=new JTextArea(10,50);
-        waitingOrdersTextArea.setEditable(false);
+        servedOrdersTable = new JTable();
+        waitingOrdersTable = new JTable();
+        orderDetailsTable = new JTable();
+
         servingOrders=new JLabel("Orders with served state (No orders available to serve)");
         servingOrders.setHorizontalAlignment(JLabel.CENTER);
-        servingOrdersTextArea=new JTextArea(10,50);
-        servingOrdersTextArea.setEditable(false);
-        scrollableWaitingOrdersTextArea=new JScrollPane(waitingOrdersTextArea);
-        scrollableWaitingOrdersTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); 
-        scrollableServingOrdersTextArea=new JScrollPane(servingOrdersTextArea);
-        scrollableServingOrdersTextArea.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS); 
+        waitingOrdersContainer =new JScrollPane(waitingOrdersTable);
+        waitingOrdersContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        waitingOrdersContainer.setPreferredSize(new Dimension(300,150));
+        servedOrdersContainer =new JScrollPane(servedOrdersTable);
+        servedOrdersContainer.setPreferredSize(new Dimension(300,150));
+        servedOrdersContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         orderStatusPanel.setBorder(BorderFactory.createTitledBorder("Order Status"));
         waitingOrdersPanel.add(waitingOrders, BorderLayout.NORTH);
-        waitingOrdersPanel.add(scrollableWaitingOrdersTextArea, BorderLayout.SOUTH);
+        waitingOrdersPanel.add(waitingOrdersContainer, BorderLayout.SOUTH);
         servingOrdersPanel.add(servingOrders, BorderLayout.NORTH);
-        servingOrdersPanel.add(scrollableServingOrdersTextArea, BorderLayout.SOUTH);
+        servingOrdersPanel.add(servedOrdersContainer, BorderLayout.SOUTH);
         orderStatusPanel.add(waitingOrdersPanel);
         orderStatusPanel.add(servingOrdersPanel);
         centerPanel.add(orderStatusPanel);
@@ -80,7 +75,23 @@ public class ChefScreenView extends JFrame{
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(southPanel, BorderLayout.SOUTH);
     }
-    
+
+    public JScrollPane getWaitingOrdersContainer() {
+        return waitingOrdersContainer;
+    }
+
+    public JTable getOrderDetailsTable() {
+        return orderDetailsTable;
+    }
+
+    public JTable getWaitingOrdersTable() {
+        return waitingOrdersTable;
+    }
+
+    public JTable getServedOrdersTable() {
+        return servedOrdersTable;
+    }
+
     public void addPrepareButtonListener(ActionListener prepareButtonListener){
         prepareButton.addActionListener(prepareButtonListener);
     }

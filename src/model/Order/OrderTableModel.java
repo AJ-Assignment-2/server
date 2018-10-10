@@ -1,27 +1,20 @@
-package clients.customer;
+package model.Order;
 
 import model.MenuItem.MenuItem;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
-public class MenuItemTableModel extends AbstractTableModel {
+public class OrderTableModel extends AbstractTableModel {
     private String[] columnNames = {
-            "Name",
-            "Price (AUD)",
-            "Energy (kj)",
-            "Protein (g)",
-            "Carbohydrates (g)",
-            "Fat (g)",
-            "Fibre (g)",
-            "Type",
-            "Category"
+            "Customer Name",
+            "Table Number"
     };
 
-    private List<MenuItem> menuItems;
+    private List<Order> orders;
 
-    public MenuItemTableModel(List<MenuItem> menuItems) {
-        this.menuItems = menuItems;
+    public OrderTableModel(List<Order> orders) {
+        this.orders = orders;
     }
 
     /**
@@ -52,7 +45,7 @@ public class MenuItemTableModel extends AbstractTableModel {
      */
     @Override
     public int getRowCount() {
-        return menuItems.size();
+        return orders.size();
     }
 
     /**
@@ -88,26 +81,14 @@ public class MenuItemTableModel extends AbstractTableModel {
      */
     @Override
     public Object getValueAt(int row, int column) {
-        MenuItem menuItem = menuItems.get(row);
+        Order order = orders.get(row);
         switch (column) {
             case 0:
-                return menuItem.getName();
+                return order.getCustomerName();
             case 1:
-                return menuItem.getPrice();
+                return order.getTableNumber();
             case 2:
-                return menuItem.getEnergy();
-            case 3:
-                return menuItem.getProtean();
-            case 4:
-                return menuItem.getCarbohydrates();
-            case 5:
-                return menuItem.getFat();
-            case 6:
-                return menuItem.getFibre();
-            case 7:
-                return menuItem.getType();
-            case 8:
-                return menuItem.getCategory();
+                return order.getState();
             default:
                 return "undefined";
         }
