@@ -8,6 +8,7 @@ package clients.chef;
 import model.Order.Order;
 import model.Order.OrderTableModel;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -39,8 +40,17 @@ public class ChefController implements ChefModelObserver{
 
     @Override
     public void ordersUpdated(List<Order> waitingOrders, List<Order> servedOrders) {
-        chefView.getWaitingOrdersTable().setModel(new OrderTableModel(waitingOrders));
-        chefView.getServedOrdersTable().setModel(new OrderTableModel(servedOrders));
+        JTable waitingOrdersTable = chefView.getWaitingOrdersTable();
+        OrderTableModel waitingOrdersTableModel = (OrderTableModel)waitingOrdersTable.getModel();
+
+        JTable servedOrdersTable = chefView.getServedOrdersTable();
+        OrderTableModel servedOrdersTableModel = (OrderTableModel)servedOrdersTable.getModel();
+
+        waitingOrdersTableModel.setOrders(waitingOrders);
+        servedOrdersTableModel.setOrders(servedOrders);
+
+        waitingOrdersTableModel.fireTableDataChanged();
+        servedOrdersTableModel.fireTableDataChanged();
     }
 
 

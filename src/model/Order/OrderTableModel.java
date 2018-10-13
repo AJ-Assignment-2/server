@@ -17,6 +17,10 @@ public class OrderTableModel extends AbstractTableModel {
         this.orders = orders;
     }
 
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
     public Order getOrder(int row) {
         if (orders != null) {
             return orders.get(row);

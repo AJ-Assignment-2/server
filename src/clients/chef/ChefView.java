@@ -5,8 +5,11 @@
  */
 package clients.chef;
 
+import model.Order.OrderTableModel;
+
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
@@ -47,8 +50,8 @@ public class ChefView extends JFrame{
         waitingOrders=new JLabel("Orders with waiting state (No orders available to prepare)");
         waitingOrders.setHorizontalAlignment(JLabel.CENTER);
         servedOrdersTable = new JTable();
-        waitingOrdersTable = new JTable();
-        orderDetailsTable = new JTable();
+        waitingOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
+        servedOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
 
         servingOrders=new JLabel("Orders with served state (No orders available to serve)");
         servingOrders.setHorizontalAlignment(JLabel.CENTER);
