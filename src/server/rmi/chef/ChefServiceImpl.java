@@ -13,7 +13,6 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class ChefServiceImpl extends UnicastRemoteObject implements ChefService {
     private static final Logger LOGGER = Logger.getLogger(ChefServiceImpl.class.getName());
@@ -36,7 +35,13 @@ public class ChefServiceImpl extends UnicastRemoteObject implements ChefService 
     }
 
     @Override
-    public void markOrderServed(Order order) throws RemoteException {
-        // TODO: Modify the OrderAccessor object to have the ability to update an Orders status then call method here.
+    public void markOrderServed(int orderId) throws RemoteException {
+        try {
+            LOGGER.log(Level.INFO,
+                    "(" + RemoteServer.getClientHost() + ") Incoming Request: Updating order state");
+            orderAccessor.setOrderState(OrderState.SERVED, orderId);
+        } catch (ServerNotActiveException e) {
+            LOGGER.log(Level.SEVERE, "RMI server has shut down!", e);
+        }
     }
 }

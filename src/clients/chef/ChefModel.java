@@ -10,6 +10,7 @@ import model.Order.OrderState;
 import server.rmi.chef.ChefService;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -65,6 +66,14 @@ public class ChefModel implements ObservableChefModel {
     private void notifyOrdersChanged() {
         for (ChefModelObserver observer : observers) {
             observer.ordersUpdated(waitingOrders, servedOrders);
+        }
+    }
+
+    public void updateSelectedOrder(Order order) {
+        try {
+            chefService.markOrderServed(order.getId());
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, "Failed to send update command to RMI Server!", e);
         }
     }
 

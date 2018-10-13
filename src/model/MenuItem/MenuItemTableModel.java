@@ -20,6 +20,10 @@ public class MenuItemTableModel extends AbstractTableModel {
 
     private List<MenuItem> menuItems;
 
+    public void setMenuItems(List<MenuItem> menuItems) {
+        this.menuItems = menuItems;
+    }
+
     public MenuItemTableModel(List<MenuItem> menuItems) {
         this.menuItems = menuItems;
     }

@@ -16,8 +16,8 @@ public interface ChefService extends Remote {
 
     /**
      * Change the given orders status to SERVED
-     * @param order The order to mark as SERVED
+     * @param orderId The id of the order to mark as SERVED
      * @throws RemoteException
      */
-    void markOrderServed(Order order) throws RemoteException;
+    void markOrderServed(int orderId) throws RemoteException;
 }
