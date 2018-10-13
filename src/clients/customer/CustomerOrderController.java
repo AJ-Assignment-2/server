@@ -12,18 +12,10 @@ import static model.MenuItem.MenuItemCategory.FOOD;
 
 import model.MenuItem.MenuItemTableModel;
 import model.MenuItem.MenuItemType;
+import model.Order.OrderState;
 
 import javax.swing.*;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author Imanuel
- */
 public class CustomerOrderController {
 
     private CustomerOrderView customerOrderView;
@@ -79,7 +71,20 @@ public class CustomerOrderController {
                     customerOrderView.setDisableInputNameAndTable();
                     customerOrderModel.addOrderItem((MenuItem) customerOrderView.getFoodComboBox().getSelectedItem());
                     customerOrderModel.addOrderItem((MenuItem) customerOrderView.getBeverageComboBox().getSelectedItem());
+
+                    // Initialise the order if this is the first item being added.
+                    if (customerOrderModel.getCustomerOrder().getCustomerName() == null) {
+                        customerOrderModel.getCustomerOrder().setState(OrderState.WAITING);
+
+                        int selectedTableNumberIndex = customerOrderView.getTableNumberComboBox().getSelectedIndex();
+                        String tableNumber = (String)customerOrderView.getTableNumberComboBox().getItemAt(selectedTableNumberIndex);
+
+                        customerOrderModel.getCustomerOrder().setTableNumber(Integer.parseInt(tableNumber));
+                        customerOrderModel.getCustomerOrder().setCustomerName(customerOrderView.getCustomerName());
+                    }
+
                 } catch (ClassCastException exception) {
+                    System.out.println(exception);
                     customerOrderView.showErrorDialog("Hi " + customerOrderView.getCustomerName() + "\nPlease select a valid food and beverage", "Select Menu");
                 }
             } else {
@@ -97,10 +102,10 @@ public class CustomerOrderController {
                 focusedItems.add((MenuItem) customerOrderView.getFoodComboBox().getSelectedItem());
                 focusedItems.add((MenuItem) customerOrderView.getBeverageComboBox().getSelectedItem());
 
-                MenuItemTableModel tableModel = new MenuItemTableModel(focusedItems);
-                JTable orderTable = new JTable(tableModel);
-                orderTable.setGridColor(Color.GRAY);
-                customerOrderView.displayOrderTable(orderTable);
+                JTable orderItemTable = customerOrderView.getOrderItemTable();
+                MenuItemTableModel menuItemTableModel = (MenuItemTableModel)orderItemTable.getModel();
+                menuItemTableModel.setMenuItems(focusedItems);
+                menuItemTableModel.fireTableDataChanged();
             } catch (ClassCastException exception) {
                 customerOrderView.showErrorDialog("Hi " + customerOrderView.getCustomerName() + "\nPlease select a valid food and beverage", "Select Menu");
             }
@@ -109,16 +114,14 @@ public class CustomerOrderController {
     }
 
     class DisplayOrderButtonListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!customerOrderModel.getCustomerOrder().getMenuItemSelections().isEmpty()) {
+                List<MenuItem> orderMenuItems = new ArrayList<>(customerOrderModel.getCustomerOrder().getMenuItemSelections().keySet());
+                MenuItemTableModel menuItemTableModel = (MenuItemTableModel)customerOrderView.getOrderItemTable().getModel();
 
-                MenuItemTableModel tableModel = new MenuItemTableModel(
-                        new ArrayList<>(customerOrderModel.getCustomerOrder().getMenuItemSelections().keySet()));
-                JTable orderTable = new JTable(tableModel);
-                orderTable.setGridColor(Color.GRAY);
-                customerOrderView.displayOrderTable(orderTable);
+                menuItemTableModel.setMenuItems(orderMenuItems);
+                menuItemTableModel.fireTableDataChanged();
             } else {
                 customerOrderView.showErrorDialog("Hi " + customerOrderView.getCustomerName() + "\nPlease order at least one food or beverage", "Order Menu");
             }
@@ -126,10 +129,9 @@ public class CustomerOrderController {
     }
 
     class SubmitOrderButtonListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+            customerOrderModel.submitCustomerOrder();
         }
         
     }

@@ -11,6 +11,7 @@ import model.MenuItem.MenuItem;
 import model.MenuItem.MenuItemCategory;
 import model.MenuItem.MenuItemType;
 import model.Order.Order;
+import model.Order.OrderState;
 import server.rmi.customer.CustomerService;
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -63,6 +64,7 @@ public class CustomerOrderModel implements ObservableCustomerOrderModel{
 
     public void submitCustomerOrder() {
         try {
+            customerOrder.setState(OrderState.WAITING);
             customerService.createOrder(customerOrder);
         } catch (RemoteException e) {
             LOGGER.log(Level.SEVERE, "Unable to submit customer order", e);

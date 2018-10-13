@@ -131,8 +131,6 @@ public class CustomerOrderView extends JFrame {
         chooseMenuItemsPanel.add(beverageLabel);
         chooseMenuItemsPanel.add(beverageComboBox);
 
-        // MARK: Setup order item table
-
         // MARK: Setup command button area
         buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(1, 7, 10, 10));
@@ -220,6 +218,10 @@ public class CustomerOrderView extends JFrame {
         JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.ERROR_MESSAGE);
     }
 
+    public JComboBox getTableNumberComboBox() {
+        return tableNumberComboBox;
+    }
+
     public void setResetScreen() {
 //        radioButtonGroup.clearSelection();
 //        foodComboBox.removeAllItems();
@@ -237,18 +239,7 @@ public class CustomerOrderView extends JFrame {
         tableNumberComboBox.setEnabled(false);
     }
 
-    public void displayOrderTable(JTable table) {
-//        if (orderTableScrollPane != null) {
-//            this.northPanel.remove(orderTableScrollPane);
-//        }
-//        revalidate();
-//        repaint();
-//        orderTableScrollPane = new JScrollPane(table);
-//        orderTableScrollPane.setPreferredSize(new Dimension(0, 200));
-//        table.getColumnModel().getColumn(0).setPreferredWidth(350);
-//        table.getColumnModel().getColumn(4).setPreferredWidth(125);
-//        this.northPanel.add(orderTableScrollPane);
-//        revalidate();
-//        repaint();
+    public JTable getOrderItemTable() {
+        return orderItemTable;
     }
 }

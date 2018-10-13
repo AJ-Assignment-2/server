@@ -12,6 +12,8 @@ import model.Order.OrderTableModel;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -55,6 +57,13 @@ public class ChefController implements ChefModelObserver {
 
         waitingOrdersTableModel.setOrders(waitingOrders);
         servedOrdersTableModel.setOrders(servedOrders);
+
+//        TableRowSorter<OrderTableModel> sorter = new TableRowSorter<>((OrderTableModel)servedOrdersTable.getModel());
+//        List <RowSorter.SortKey> sortKeys = new ArrayList<>();
+//        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+//        sorter.setSortKeys(sortKeys);
+//        waitingOrdersTable.setRowSorter(sorter);
+//        servedOrdersTable.setRowSorter(sorter);
 
         waitingOrdersTableModel.fireTableDataChanged();
         servedOrdersTableModel.fireTableDataChanged();

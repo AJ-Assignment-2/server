@@ -147,21 +147,21 @@ public class OrderAccessor implements OrderDao {
             PreparedStatement statement = connection.prepareStatement(orderSql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, order.getCustomerName());
             statement.setString(2, order.getState().toString());
-            //statement.setString(3, Integer.toString(order.getTableNumber()));
+            statement.setString(3, Integer.toString(order.getTableNumber()));
             statement.execute();
-//
-//            // Create entries for the Order's menu item's in the RestaurantOrderItem weak entity.
-//            ResultSet keysFromInsert = statement.getGeneratedKeys();
-//            int insertedOrderId;
-//            if (keysFromInsert.next()) {
-//                insertedOrderId = keysFromInsert.getInt(1);
-//                for (MenuItem menuItem : order.getMenuItemSelections().keySet() ) {
-//                    String orderItemSql = "INSERT INTO RestaurantOrderItem VALUES(" + menuItem.getId() +
-//                            ", " + insertedOrderId + ", " + order.getMenuItemSelections().get(menuItem) + ")";
-//                    statement = connection.prepareStatement(orderItemSql);
-//                    statement.execute();
-//                }
-//            }
+
+            // Create entries for the Order's menu item's in the RestaurantOrderItem weak entity.
+            ResultSet keysFromInsert = statement.getGeneratedKeys();
+            int insertedOrderId;
+            if (keysFromInsert.next()) {
+                insertedOrderId = keysFromInsert.getInt(1);
+                for (MenuItem menuItem : order.getMenuItemSelections().keySet() ) {
+                    String orderItemSql = "INSERT INTO RestaurantOrderItem VALUES(" + menuItem.getId() +
+                            ", " + insertedOrderId + ", " + order.getMenuItemSelections().get(menuItem) + ")";
+                    statement = connection.prepareStatement(orderItemSql);
+                    statement.execute();
+                }
+            }
 
         } catch (SQLException e) {
             LOGGER.log(Level.WARNING, e.toString(), e);
