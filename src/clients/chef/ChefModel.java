@@ -1,25 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clients.chef;
 
 import model.Order.Order;
+import model.Order.OrderComparator;
 import model.Order.OrderState;
 import server.rmi.chef.ChefService;
 
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author Imanuel
- */
+
 public class ChefModel implements ObservableChefModel {
     private static final Logger LOGGER = Logger.getLogger(ChefModel.class.getName());
 
@@ -40,10 +35,10 @@ public class ChefModel implements ObservableChefModel {
                 try {
                     while (true) {
                         setOrders(chefService.getAllOrders());
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                     }
                 } catch (Exception e) {
-                    LOGGER.log(Level.WARNING, "Attempt to retrieve waiting orders failed.", e.toString());
+                    LOGGER.log(Level.WARNING, "Attempt to retrieve waiting orders failed.", e);
                 }
             }).start();
 
@@ -53,6 +48,7 @@ public class ChefModel implements ObservableChefModel {
     }
 
     public void setOrders(List<Order> orders) {
+        Collections.sort(orders, new OrderComparator());
         this.waitingOrders = orders.stream().filter(order -> order.getState() == OrderState.WAITING)
                 .collect(Collectors.toList());
 
@@ -65,6 +61,14 @@ public class ChefModel implements ObservableChefModel {
     private void notifyOrdersChanged() {
         for (ChefModelObserver observer : observers) {
             observer.ordersUpdated(waitingOrders, servedOrders);
+        }
+    }
+
+    public void updateSelectedOrder(Order order) {
+        try {
+            chefService.markOrderServed(order.getId());
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, "Failed to send update command to RMI Server!", e);
         }
     }
 

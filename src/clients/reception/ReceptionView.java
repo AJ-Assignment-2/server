@@ -5,38 +5,23 @@
  */
 package clients.reception;
 
-//import clients.customer.MenuItemTableModel;
+import model.MenuItem.MenuItemTotalsTableModel;
+import model.Order.OrderTableModel;
+
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.border.Border;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import javax.swing.*;
 
-/**
- *
- * @author Imanuel
- */
 public class ReceptionView extends JFrame {
 
     private JMenuBar menuBar;
     private JMenu menuFile;
     private JMenuItem menuAbout;
-
-    private Border border;
-
-    private JPanel northPanel;
 
     private JPanel centerPanel;
     private JPanel servedOrdersPanel;
@@ -71,14 +56,10 @@ public class ReceptionView extends JFrame {
         menuBar.add(menuFile);
         this.setJMenuBar(menuBar);
 
-        border = BorderFactory.createLineBorder(Color.BLACK);
-
-        northPanel = new JPanel();
-
         // Initialise JTables
-        servedOrdersTable = new JTable();
-        billedOrdersTable = new JTable();
-        orderItemDetailTable = new JTable();
+        servedOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
+        billedOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
+        orderItemDetailTable = new JTable(new MenuItemTotalsTableModel(new ArrayList<>()));
 
         centerPanel = new JPanel();
         servedOrdersPanel = new JPanel();
@@ -100,12 +81,10 @@ public class ReceptionView extends JFrame {
         billedOrdersTableContainer = new JScrollPane(billedOrdersTable);
         orderItemDetailsContainer = new JScrollPane(orderItemDetailTable);
 
-        servedOrdersTableContainer.setPreferredSize(new Dimension(0, 200));
-        billedOrdersTableContainer.setPreferredSize(new Dimension(0, 200));
-        orderItemDetailsContainer.setPreferredSize(new Dimension(700, 200));
-        servedOrdersTableContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        billedOrdersTableContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        orderItemDetailsContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        servedOrdersTableContainer.setPreferredSize(new Dimension(400, 200));
+        billedOrdersTableContainer.setPreferredSize(new Dimension(400, 200));
+        orderItemDetailsContainer.setPreferredSize(new Dimension(1050, 200));
 
         servedOrdersPanel.add(servingOrders, BorderLayout.NORTH);
         billedOrdersPanel.add(billingOrders, BorderLayout.NORTH);
@@ -122,9 +101,39 @@ public class ReceptionView extends JFrame {
 
         southPanel = new JPanel();
         billButton = new JButton("Bill");
+        billButton.setEnabled(false);
         exitButton = new JButton("Exit");
         southPanel.add(billButton);
         southPanel.add(exitButton);
+
+        billedOrdersTable.getSelectionModel().addListSelectionListener(event -> servedOrdersTable.clearSelection());
+        billedOrdersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        billedOrdersTable.setCellSelectionEnabled(false);
+        billedOrdersTable.setRowSelectionAllowed(true);
+        servedOrdersTable.getSelectionModel().addListSelectionListener(event -> billedOrdersTable.clearSelection());
+        servedOrdersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        // Always highlight the entire row
+        servedOrdersTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int row = servedOrdersTable.rowAtPoint(e.getPoint());
+                servedOrdersTable.getSelectionModel().setSelectionInterval(row, row);
+                billButton.setEnabled(true);
+            }
+        });
+
+        // Always highlight the entire row
+        billedOrdersTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int row = billedOrdersTable.rowAtPoint(e.getPoint());
+                billedOrdersTable.getSelectionModel().setSelectionInterval(row, row);
+                billButton.setEnabled(false);
+            }
+        });
 
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(southPanel, BorderLayout.SOUTH);

@@ -78,4 +78,19 @@ public class Order implements Serializable {
         menuItemSelections = new HashMap<>();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Order) {
+            Order orderToCompare = (Order)obj;
+            if(orderToCompare.getTableNumber() == this.getTableNumber()) {
+                if (orderToCompare.getCustomerName().equals(this.getCustomerName())) {
+                    if (orderToCompare.getId() == this.getId()) {
+                        return true;
+                    }
+                }
+            }
+
+        }
+        return false;
+    }
 }

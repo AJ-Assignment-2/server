@@ -11,17 +11,9 @@ import model.MenuItem.MenuItem;
 import model.MenuItem.MenuItemCategory;
 import model.MenuItem.MenuItemType;
 import model.Order.Order;
+import model.Order.OrderState;
 import server.rmi.customer.CustomerService;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/**
- *
- * @author Imanuel
- */
 public class CustomerOrderModel implements ObservableCustomerOrderModel{
     private static final Logger LOGGER = Logger.getLogger(CustomerOrderModel.class.getName());
 
@@ -61,13 +53,17 @@ public class CustomerOrderModel implements ObservableCustomerOrderModel{
         return customerOrder;
     }
 
+    public void setCustomerOrder(Order customerOrder) {
+        this.customerOrder = customerOrder;
+    }
+
     public void submitCustomerOrder() {
         try {
+            customerOrder.setState(OrderState.WAITING);
             customerService.createOrder(customerOrder);
         } catch (RemoteException e) {
             LOGGER.log(Level.SEVERE, "Unable to submit customer order", e);
         }
-
     }
 
     @Override

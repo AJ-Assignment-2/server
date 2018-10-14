@@ -6,24 +6,20 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.MenuItem.MenuItem;
+import model.ColumnWidthUtil;
+import model.MenuItem.*;
+
 import static model.MenuItem.MenuItemCategory.BEVERAGE;
 import static model.MenuItem.MenuItemCategory.FOOD;
 
-import model.MenuItem.MenuItemTableModel;
-import model.MenuItem.MenuItemType;
+import model.MenuItem.MenuItem;
+import model.Order.Order;
+import model.Order.OrderState;
 
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-/**
- *
- * @author Imanuel
- */
 public class CustomerOrderController {
 
     private CustomerOrderView customerOrderView;
@@ -42,9 +38,28 @@ public class CustomerOrderController {
         this.customerOrderView.addSubmitOrderButtonListener(new SubmitOrderButtonListener());
         this.customerOrderView.addClearDisplayButtonListener(new ClearButtonListener());
         this.customerOrderView.addQuitButtonListener(new QuitSystem());
+
+        this.customerOrderView.getBreakfastRadioButton().doClick();
     }
 
-    class CategorySelectedButtonListener implements ActionListener {
+    private void clearOrder() {
+        customerOrderModel.setCustomerOrder(new Order());
+        MenuItemTotalsTableModel menuItemTotalsTableModel = (MenuItemTotalsTableModel) customerOrderView.getOrderItemTable().getModel();
+        menuItemTotalsTableModel.setMenuItems(new ArrayList<>());
+        menuItemTotalsTableModel.fireTableDataChanged();
+
+        customerOrderView.getNameTextArea().setText("");
+        customerOrderView.getNameTextArea().setEnabled(true);
+        customerOrderView.getNameTextArea().setBackground(Color.WHITE);
+        customerOrderView.getNameTextArea().setForeground(Color.BLACK);
+
+        customerOrderView.getTableNumberComboBox().setEnabled(true);
+        customerOrderView.getSubmitOrderButton().setEnabled(false);
+        customerOrderView.getClearDisplayButton().setEnabled(false);
+        customerOrderView.getTableNumberComboBox().setSelectedIndex(0);
+    }
+
+    private class CategorySelectedButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -70,17 +85,33 @@ public class CustomerOrderController {
 
     }
 
-    class EnterDataButtonListener implements ActionListener {
-
+    private class EnterDataButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(!customerOrderView.getCustomerName().equals("") || !customerOrderView.getCustomerTable().equals("Select Table Number")) {
-                try {
-                    customerOrderView.setDisableInputNameAndTable();
-                    customerOrderModel.addOrderItem((MenuItem) customerOrderView.getFoodComboBox().getSelectedItem());
-                    customerOrderModel.addOrderItem((MenuItem) customerOrderView.getBeverageComboBox().getSelectedItem());
-                } catch (ClassCastException exception) {
-                    customerOrderView.showErrorDialog("Hi " + customerOrderView.getCustomerName() + "\nPlease select a valid food and beverage", "Select Menu");
+            if (!customerOrderView.getCustomerName().equals("") && !customerOrderView.getCustomerTable().equals("Select a table number")) {
+                customerOrderView.getClearDisplayButton().setEnabled(true);
+                customerOrderView.getSubmitOrderButton().setEnabled(true);
+
+                // Disable the name and table  number inputs
+                if (customerOrderView.getNameTextArea().isEnabled() || customerOrderView.getTableNumberComboBox().isEnabled()) {
+                    customerOrderView.getTableNumberComboBox().setEnabled(false);
+                    customerOrderView.getNameTextArea().setEnabled(false);
+                    customerOrderView.getNameTextArea().setBackground(customerOrderView.getTableNumberComboBox().getBackground());
+                    customerOrderView.getNameTextArea().setForeground(customerOrderView.getTableNumberComboBox().getForeground());
+                }
+
+                customerOrderModel.addOrderItem((MenuItem) customerOrderView.getFoodComboBox().getSelectedItem());
+                customerOrderModel.addOrderItem((MenuItem) customerOrderView.getBeverageComboBox().getSelectedItem());
+
+                // Initialise the order if this is the first item being added.
+                if (customerOrderModel.getCustomerOrder().getCustomerName() == null) {
+                    customerOrderModel.getCustomerOrder().setState(OrderState.WAITING);
+
+                    int selectedTableNumberIndex = customerOrderView.getTableNumberComboBox().getSelectedIndex();
+                    String tableNumber = (String) customerOrderView.getTableNumberComboBox().getItemAt(selectedTableNumberIndex);
+
+                    customerOrderModel.getCustomerOrder().setTableNumber(Integer.parseInt(tableNumber));
+                    customerOrderModel.getCustomerOrder().setCustomerName(customerOrderView.getCustomerName());
                 }
             } else {
                 customerOrderView.showErrorDialog("Please enter your name or your table number", "Incorrect Name or Table Number");
@@ -88,80 +119,85 @@ public class CustomerOrderController {
         }
     }
 
-    class DisplayChoicesButtonListener implements ActionListener {
-
+    private class DisplayChoicesButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                List<MenuItem> focusedItems = new ArrayList<>();
-                focusedItems.add((MenuItem) customerOrderView.getFoodComboBox().getSelectedItem());
-                focusedItems.add((MenuItem) customerOrderView.getBeverageComboBox().getSelectedItem());
+            List<MenuItem> focusedItems = new ArrayList<>();
+            focusedItems.add((MenuItem) customerOrderView.getFoodComboBox().getSelectedItem());
+            focusedItems.add((MenuItem) customerOrderView.getBeverageComboBox().getSelectedItem());
 
-                MenuItemTableModel tableModel = new MenuItemTableModel(focusedItems);
-                JTable orderTable = new JTable(tableModel);
-                orderTable.setGridColor(Color.GRAY);
-                customerOrderView.displayOrderTable(orderTable);
-            } catch (ClassCastException exception) {
-                customerOrderView.showErrorDialog("Hi " + customerOrderView.getCustomerName() + "\nPlease select a valid food and beverage", "Select Menu");
-            }
+            JTable orderItemTable = customerOrderView.getOrderItemTable();
+            MenuItemTotalsTableModel menuItemTableModel = (MenuItemTotalsTableModel) orderItemTable.getModel();
+            menuItemTableModel.setMenuItems(focusedItems);
+            menuItemTableModel.fireTableDataChanged();
+            ColumnWidthUtil.adjustColumnWidths(orderItemTable, new int[]{0});
         }
-
     }
 
-    class DisplayOrderButtonListener implements ActionListener {
-
+    private class DisplayOrderButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            List<MenuItem> orderMenuItems = new ArrayList<>();
+
             if (!customerOrderModel.getCustomerOrder().getMenuItemSelections().isEmpty()) {
+                for (MenuItem item : customerOrderModel.getCustomerOrder().getMenuItemSelections().keySet()) {
+                    int quantity = customerOrderModel.getCustomerOrder().getMenuItemSelections().get(item);
 
-                MenuItemTableModel tableModel = new MenuItemTableModel(
-                        new ArrayList<>(customerOrderModel.getCustomerOrder().getMenuItemSelections().keySet()));
-                JTable orderTable = new JTable(tableModel);
-                orderTable.setGridColor(Color.GRAY);
-                customerOrderView.displayOrderTable(orderTable);
-            } else {
-                customerOrderView.showErrorDialog("Hi " + customerOrderView.getCustomerName() + "\nPlease order at least one food or beverage", "Order Menu");
-            }
-        }
-    }
-
-    class SubmitOrderButtonListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            
-        }
-        
-    }
-
-    class ClearButtonListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            customerOrderView.setResetScreen();
-        }
-
-    }
-
-        class QuitSystem implements ActionListener {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-
-        }
-
-        private class MenuItemNameCellRenderer extends DefaultListCellRenderer {
-
-            @Override
-            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (value instanceof MenuItem) {
-                    MenuItem item = (MenuItem) value;
-                    setText(item.getName());
+                    for (int i = 0; i < quantity; i++) {
+                        orderMenuItems.add(item);
+                    }
                 }
-                return this;
+
+                MenuItemTotalsTableModel menuItemTableModel = (MenuItemTotalsTableModel) customerOrderView.getOrderItemTable().getModel();
+                JTable table = customerOrderView.getOrderItemTable();
+
+                menuItemTableModel.setMenuItems(orderMenuItems);
+                menuItemTableModel.fireTableDataChanged();
+
+                ColumnWidthUtil.adjustColumnWidths(table, new int[]{0});
+            } else {
+                customerOrderView.showErrorDialog("You have no items in your order!", "Please select items for your order");
             }
         }
     }
+
+    private class SubmitOrderButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (customerOrderModel.getCustomerOrder().getMenuItemSelections().size() > 0) {
+                customerOrderModel.submitCustomerOrder();
+                clearOrder();
+
+            } else {
+                customerOrderView.showErrorDialog("You have no items in your order!", "Please select items for your order");
+            }
+        }
+    }
+
+    private class ClearButtonListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            clearOrder();
+        }
+
+    }
+
+    private class QuitSystem implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
+        }
+    }
+
+    private class MenuItemNameCellRenderer extends DefaultListCellRenderer {
+        @Override
+        public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            if (value instanceof MenuItem) {
+                MenuItem item = (MenuItem) value;
+                setText(item.getName());
+            }
+            return this;
+        }
+    }
+}

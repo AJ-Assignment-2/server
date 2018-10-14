@@ -1,26 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clients.reception;
 
 import model.Order.Order;
+import model.Order.OrderComparator;
 import model.Order.OrderState;
 import server.rmi.reception.ReceptionService;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author Imanuel
- */
 public class ReceptionModel implements ObservableReceptionModel {
 
     private static final Logger LOGGER = Logger.getLogger(ReceptionModel.class.getName());
@@ -42,7 +35,7 @@ public class ReceptionModel implements ObservableReceptionModel {
                 while (true) {
                     try {
                         setOrders(receptionService.getOrders());
-                        Thread.sleep(10000);
+                        Thread.sleep(1000);
                     } catch (RemoteException e) {
                         LOGGER.log(Level.WARNING, "Attempt to retrieve orders through RMI failed", e);
                     } catch (InterruptedException e) {
@@ -63,19 +56,13 @@ public class ReceptionModel implements ObservableReceptionModel {
     }
 
     private void setOrders(List<Order> orders) {
-        servedOrders.clear();
-        billedOrders.clear();
+        Collections.sort(orders, new OrderComparator());
 
-        orders.stream().forEach(order -> {
-            switch (order.getState()) {
-                case SERVED:
-                    servedOrders.add(order);
-                    break;
-                case BILLED:
-                    billedOrders.add(order);
-                    break;
-            }
-        });
+        this.billedOrders = orders.stream().filter(order -> order.getState() == OrderState.BILLED)
+                .collect(Collectors.toList());
+
+        this.servedOrders = orders.stream().filter(order -> order.getState() == OrderState.SERVED)
+                .collect(Collectors.toList());
 
         notifyOrdersUpdated();
     }

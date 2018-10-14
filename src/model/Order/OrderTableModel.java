@@ -1,7 +1,5 @@
 package model.Order;
 
-import model.MenuItem.MenuItem;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
@@ -17,8 +15,12 @@ public class OrderTableModel extends AbstractTableModel {
         this.orders = orders;
     }
 
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
     public Order getOrder(int row) {
-        if (orders != null) {
+        if (orders != null && row != -1) {
             return orders.get(row);
         } else {
             return null;
