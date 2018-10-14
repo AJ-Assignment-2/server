@@ -1,9 +1,5 @@
 package clients.chef;
 
-/**
- *
- * @author Imanuel
- */
 public class ChefApplication {
     public static void main(String[] args){
         ChefView chefView =new ChefView();

@@ -9,7 +9,6 @@ import model.MenuItem.MenuItemTotalsTableModel;
 import model.Order.OrderTableModel;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -17,7 +16,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.border.Border;
 
 public class ReceptionView extends JFrame {
 
@@ -84,12 +82,9 @@ public class ReceptionView extends JFrame {
         orderItemDetailsContainer = new JScrollPane(orderItemDetailTable);
 
 
-        servedOrdersTableContainer.setPreferredSize(new Dimension(300, 200));
-        billedOrdersTableContainer.setPreferredSize(new Dimension(300, 200));
-        orderItemDetailsContainer.setPreferredSize(new Dimension(700, 200));
-        servedOrdersTableContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        billedOrdersTableContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-        orderItemDetailsContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        servedOrdersTableContainer.setPreferredSize(new Dimension(400, 200));
+        billedOrdersTableContainer.setPreferredSize(new Dimension(400, 200));
+        orderItemDetailsContainer.setPreferredSize(new Dimension(1050, 200));
 
         servedOrdersPanel.add(servingOrders, BorderLayout.NORTH);
         billedOrdersPanel.add(billingOrders, BorderLayout.NORTH);

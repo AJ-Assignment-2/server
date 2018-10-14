@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clients.chef;
 
+import model.ColumnWidthUtil;
 import model.MenuItem.MenuItem;
 import model.MenuItem.MenuItemComparator;
 import model.MenuItem.MenuItemTableModel;
@@ -114,6 +110,7 @@ public class ChefController implements ChefModelObserver {
                 MenuItemTableModel menuItemTableModel = (MenuItemTableModel) chefView.getOrderDetailsTable().getModel();
                 menuItemTableModel.setMenuItems(selectedOrderMenuItems);
                 menuItemTableModel.fireTableDataChanged();
+                ColumnWidthUtil.adjustColumnWidths(chefView.getOrderDetailsTable(), new int[]{0});
             }
         }
     }

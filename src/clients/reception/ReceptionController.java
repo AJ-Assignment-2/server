@@ -1,33 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clients.reception;
 
+import model.ColumnWidthUtil;
 import model.MenuItem.MenuItem;
 import model.MenuItem.MenuItemComparator;
-import model.MenuItem.MenuItemTableModel;
 import model.MenuItem.MenuItemTotalsTableModel;
 import model.Order.Order;
-import model.Order.OrderComparator;
-import model.Order.OrderState;
 import model.Order.OrderTableModel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-/**
- * @author Imanuel
- */
 public class ReceptionController implements ReceptionModelObserver {
     private ReceptionView receptionView;
     private ReceptionModel receptionModel;
@@ -116,7 +104,6 @@ public class ReceptionController implements ReceptionModelObserver {
             if (table.getSelectedRow() != -1) {
                 OrderTableModel tableModel = (OrderTableModel) table.getModel();
                 Order selectedOrder = tableModel.getOrder(table.getSelectedRow());
-                //table.setRowSelectionInterval(table.getSelectedRow(), table.getSelectedRow());
 
                 List<MenuItem> menuItems = new ArrayList<>();
 
@@ -133,9 +120,8 @@ public class ReceptionController implements ReceptionModelObserver {
                 MenuItemTotalsTableModel menuItemTableModel = (MenuItemTotalsTableModel) receptionView.getOrderItemDetailTable().getModel();
                 menuItemTableModel.setMenuItems(menuItems);
                 menuItemTableModel.fireTableDataChanged();
+                ColumnWidthUtil.adjustColumnWidths(receptionView.getOrderItemDetailTable(), new int[]{0});
             }
-
-
         }
     }
 

@@ -1,12 +1,9 @@
 package clients.customer;
 
-import model.MenuItem.MenuItemColumnWidthRenderer;
-import model.MenuItem.MenuItemTableModel;
 import model.MenuItem.MenuItemTotalsTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -90,7 +87,6 @@ public class CustomerOrderView extends JFrame {
 
         // MARK: Init tables and scroll panes
         orderItemTable = new JTable(new MenuItemTotalsTableModel(new ArrayList<>()));
-
         orderTableScrollPane = new JScrollPane(orderItemTable);
 
         // MARK: Init combo boxes

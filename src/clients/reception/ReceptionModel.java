@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package clients.reception;
 
 import model.Order.Order;
@@ -19,10 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author Imanuel
- */
 public class ReceptionModel implements ObservableReceptionModel {
 
     private static final Logger LOGGER = Logger.getLogger(ReceptionModel.class.getName());

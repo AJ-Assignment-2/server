@@ -1,7 +1,5 @@
 package model.Order;
 
-import model.MenuItem.MenuItem;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 

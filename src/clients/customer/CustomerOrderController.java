@@ -130,6 +130,7 @@ public class CustomerOrderController {
             MenuItemTotalsTableModel menuItemTableModel = (MenuItemTotalsTableModel) orderItemTable.getModel();
             menuItemTableModel.setMenuItems(focusedItems);
             menuItemTableModel.fireTableDataChanged();
+            ColumnWidthUtil.adjustColumnWidths(orderItemTable, new int[]{0});
         }
     }
 
@@ -153,8 +154,7 @@ public class CustomerOrderController {
                 menuItemTableModel.setMenuItems(orderMenuItems);
                 menuItemTableModel.fireTableDataChanged();
 
-                //customerOrderView.getOrderItemTable().setDefaultRenderer(String.class, new MenuItemColumnWidthRenderer());
-                ColumnWidthUtil.adjustColumnWidths(table, new int[]{0,1,2,3,4,5,6,7,8});
+                ColumnWidthUtil.adjustColumnWidths(table, new int[]{0});
             } else {
                 customerOrderView.showErrorDialog("You have no items in your order!", "Please select items for your order");
             }

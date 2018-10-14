@@ -1,35 +1,33 @@
 package model;
 
 import javax.swing.*;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 
 public class ColumnWidthUtil {
-    public static void adjustColumnWidths(JTable table, int[] columnsToResize) {
+    public static void adjustColumnWidths(JTable tableToAdjust, int[] columnsToResize) {
         for (int columnIndex : columnsToResize) {
-            TableColumn tableColumn = table.getColumnModel().getColumn(columnIndex);
-            int preferredWidth = tableColumn.getMinWidth();
-            int maxWidth = tableColumn.getMaxWidth();
+            TableColumn currentColumn = tableToAdjust.getColumnModel().getColumn(columnIndex);
+            int maximumW = currentColumn.getMaxWidth();
+            int prefW = currentColumn.getMinWidth();
 
-            for (int row = 0; row < table.getRowCount(); row++)
+            for (int currentRow = 0; currentRow < tableToAdjust.getRowCount(); currentRow++)
             {
-                TableCellRenderer cellRenderer = table.getCellRenderer(row, columnIndex);
-                Component c = table.prepareRenderer(cellRenderer, row, columnIndex);
-                int width = c.getPreferredSize().width;
-                preferredWidth = Math.max(preferredWidth, width);
-
-
-                //  We've exceeded the maximum width, no need to check other rows
-
-                if (preferredWidth >= maxWidth)
+                TableCellRenderer tableCellRenderer = tableToAdjust.getCellRenderer(currentRow, columnIndex);
+                Component cell = tableToAdjust.prepareRenderer(tableCellRenderer, currentRow, columnIndex);
+                int width = cell.getPreferredSize().width;
+                prefW = Math.max(prefW, width);
+                if (prefW > maximumW)
                 {
-                    preferredWidth = maxWidth;
+                    prefW = maximumW;
                     break;
                 }
             }
 
-            tableColumn.setPreferredWidth( preferredWidth );
+            currentColumn.setPreferredWidth(prefW);
         }
     }
 }
