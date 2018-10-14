@@ -5,13 +5,17 @@
  */
 package clients.chef;
 
+import model.MenuItem.MenuItem;
 import model.Order.Order;
+import model.Order.OrderComparator;
 import model.Order.OrderState;
 import server.rmi.chef.ChefService;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -54,6 +58,7 @@ public class ChefModel implements ObservableChefModel {
     }
 
     public void setOrders(List<Order> orders) {
+        Collections.sort(orders, new OrderComparator());
         this.waitingOrders = orders.stream().filter(order -> order.getState() == OrderState.WAITING)
                 .collect(Collectors.toList());
 

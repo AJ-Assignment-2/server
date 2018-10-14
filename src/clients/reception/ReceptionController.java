@@ -6,8 +6,11 @@
 package clients.reception;
 
 import model.MenuItem.MenuItem;
+import model.MenuItem.MenuItemComparator;
 import model.MenuItem.MenuItemTableModel;
+import model.MenuItem.MenuItemTotalsTableModel;
 import model.Order.Order;
+import model.Order.OrderComparator;
 import model.Order.OrderState;
 import model.Order.OrderTableModel;
 
@@ -18,6 +21,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -42,6 +46,14 @@ public class ReceptionController implements ReceptionModelObserver {
 
     @Override
     public void ordersReceivedFromServer(List<Order> servedOrders, List<Order> billedOrders) {
+        OrderTableModel servedOrdersTableModel = (OrderTableModel)this.receptionView.getServedOrdersTable().getModel();
+        OrderTableModel billedOrdersTableModel = (OrderTableModel)this.receptionView.getBilledOrdersTable().getModel();
+
+        Collections.sort(servedOrders, new OrderComparator());
+
+        servedOrdersTableModel.setOrders(servedOrders);
+        billedOrdersTableModel.setOrders(billedOrders);
+
         this.receptionView.getServedOrdersTable().setModel(new OrderTableModel(servedOrders));
         this.receptionView.getBilledOrdersTable().setModel(new OrderTableModel(billedOrders));
     }
@@ -73,8 +85,13 @@ public class ReceptionController implements ReceptionModelObserver {
                 Order selectedOrder = tableModel.getOrder(selectedRow);
 
                 List<MenuItem> menuItems = new ArrayList<>(selectedOrder.getMenuItemSelections().keySet());
+                menuItems.sort(new MenuItemComparator());
 
-                receptionView.getOrderItemDetailTable().setModel(new MenuItemTableModel(menuItems));
+                MenuItemTotalsTableModel menuItemTableModel = (MenuItemTotalsTableModel) receptionView.getOrderItemDetailTable().getModel();
+                menuItemTableModel.setMenuItems(menuItems);
+                menuItemTableModel.fireTableDataChanged();
+
+                
             }
         }
     }

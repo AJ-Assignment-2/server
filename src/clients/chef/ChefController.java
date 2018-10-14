@@ -5,6 +5,8 @@
  */
 package clients.chef;
 
+import model.MenuItem.MenuItem;
+import model.MenuItem.MenuItemComparator;
 import model.MenuItem.MenuItemTableModel;
 import model.Order.Order;
 import model.Order.OrderTableModel;
@@ -17,6 +19,8 @@ import javax.swing.table.TableRowSorter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -58,16 +62,10 @@ public class ChefController implements ChefModelObserver {
         waitingOrdersTableModel.setOrders(waitingOrders);
         servedOrdersTableModel.setOrders(servedOrders);
 
-//        TableRowSorter<OrderTableModel> sorter = new TableRowSorter<>((OrderTableModel)servedOrdersTable.getModel());
-//        List <RowSorter.SortKey> sortKeys = new ArrayList<>();
-//        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-//        sorter.setSortKeys(sortKeys);
-//        waitingOrdersTable.setRowSorter(sorter);
-//        servedOrdersTable.setRowSorter(sorter);
-
         waitingOrdersTableModel.fireTableDataChanged();
         servedOrdersTableModel.fireTableDataChanged();
 
+        // Check if the selected order is still in the table, if it is, select it.
         if (selectedWaitingOrder != null) {
             for (Order order : waitingOrders) {
                 if (order.equals(selectedWaitingOrder)) {
@@ -114,10 +112,14 @@ public class ChefController implements ChefModelObserver {
                 OrderTableModel tableModel = (OrderTableModel) table.getModel();
                 Order selectedOrder = tableModel.getOrder(table.getSelectedRow());
 
+                List<MenuItem> selectedOrderMenuItems = new ArrayList<>(selectedOrder.getMenuItemSelections().keySet());
+                Collections.sort(selectedOrderMenuItems, new MenuItemComparator());
                 MenuItemTableModel menuItemTableModel = (MenuItemTableModel) chefView.getOrderDetailsTable().getModel();
-                menuItemTableModel.setMenuItems(new ArrayList<>(selectedOrder.getMenuItemSelections().keySet()));
+                menuItemTableModel.setMenuItems(selectedOrderMenuItems);
                 menuItemTableModel.fireTableDataChanged();
             }
         }
     }
+
+
 }

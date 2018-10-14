@@ -42,7 +42,7 @@ public class ReceptionModel implements ObservableReceptionModel {
                 while (true) {
                     try {
                         setOrders(receptionService.getOrders());
-                        Thread.sleep(10000);
+                        Thread.sleep(1000);
                     } catch (RemoteException e) {
                         LOGGER.log(Level.WARNING, "Attempt to retrieve orders through RMI failed", e);
                     } catch (InterruptedException e) {

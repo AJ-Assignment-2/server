@@ -6,22 +6,16 @@
 package clients.reception;
 
 //import clients.customer.MenuItemTableModel;
+import model.MenuItem.MenuItemTotalsTableModel;
+import model.Order.OrderTableModel;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import java.util.ArrayList;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 /**
@@ -76,9 +70,9 @@ public class ReceptionView extends JFrame {
         northPanel = new JPanel();
 
         // Initialise JTables
-        servedOrdersTable = new JTable();
-        billedOrdersTable = new JTable();
-        orderItemDetailTable = new JTable();
+        servedOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
+        billedOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
+        orderItemDetailTable = new JTable(new MenuItemTotalsTableModel(new ArrayList<>()));
 
         centerPanel = new JPanel();
         servedOrdersPanel = new JPanel();
@@ -99,6 +93,7 @@ public class ReceptionView extends JFrame {
         servedOrdersTableContainer = new JScrollPane(servedOrdersTable);
         billedOrdersTableContainer = new JScrollPane(billedOrdersTable);
         orderItemDetailsContainer = new JScrollPane(orderItemDetailTable);
+
 
         servedOrdersTableContainer.setPreferredSize(new Dimension(0, 200));
         billedOrdersTableContainer.setPreferredSize(new Dimension(0, 200));
