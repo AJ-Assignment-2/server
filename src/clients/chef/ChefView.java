@@ -10,6 +10,8 @@ import model.Order.OrderTableModel;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -56,6 +58,7 @@ public class ChefView extends JFrame{
         orderItemDetailsLabel = new JLabel("Selected order details");
 
         prepareButton = new JButton("Prepare Order");
+        prepareButton.setEnabled(false);
 
         waitingOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
         servedOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
@@ -83,6 +86,28 @@ public class ChefView extends JFrame{
         rootPanel.add(orderItemDetailsLabel);
         rootPanel.add(orderItemDetailsScrollPane);
         rootPanel.add(prepareButton);
+
+        // Always highlight the entire row
+        servedOrdersTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int row = servedOrdersTable.rowAtPoint(e.getPoint());
+                servedOrdersTable.getSelectionModel().setSelectionInterval(row, row);
+                prepareButton.setEnabled(false);
+            }
+        });
+
+        // Always highlight the entire row
+        waitingOrdersTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int row = waitingOrdersTable.rowAtPoint(e.getPoint());
+                waitingOrdersTable.getSelectionModel().setSelectionInterval(row, row);
+                prepareButton.setEnabled(true);
+            }
+        });
 
         add(rootPanel);
     }

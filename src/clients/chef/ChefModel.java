@@ -40,7 +40,7 @@ public class ChefModel implements ObservableChefModel {
                 try {
                     while (true) {
                         setOrders(chefService.getAllOrders());
-                        Thread.sleep(1000);
+                        Thread.sleep(5000);
                     }
                 } catch (Exception e) {
                     LOGGER.log(Level.WARNING, "Attempt to retrieve waiting orders failed.", e);

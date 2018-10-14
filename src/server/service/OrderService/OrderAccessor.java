@@ -155,6 +155,7 @@ public class OrderAccessor implements OrderDao {
             int insertedOrderId;
             if (keysFromInsert.next()) {
                 insertedOrderId = keysFromInsert.getInt(1);
+
                 for (MenuItem menuItem : order.getMenuItemSelections().keySet() ) {
                     String orderItemSql = "INSERT INTO RestaurantOrderItem VALUES(" + menuItem.getId() +
                             ", " + insertedOrderId + ", " + order.getMenuItemSelections().get(menuItem) + ")";

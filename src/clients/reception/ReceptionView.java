@@ -13,6 +13,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -104,6 +106,7 @@ public class ReceptionView extends JFrame {
 
         southPanel = new JPanel();
         billButton = new JButton("Bill");
+        billButton.setEnabled(false);
         exitButton = new JButton("Exit");
         southPanel.add(billButton);
         southPanel.add(exitButton);
@@ -114,6 +117,28 @@ public class ReceptionView extends JFrame {
         billedOrdersTable.setRowSelectionAllowed(true);
         servedOrdersTable.getSelectionModel().addListSelectionListener(event -> billedOrdersTable.clearSelection());
         servedOrdersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        // Always highlight the entire row
+        servedOrdersTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int row = servedOrdersTable.rowAtPoint(e.getPoint());
+                servedOrdersTable.getSelectionModel().setSelectionInterval(row, row);
+                billButton.setEnabled(true);
+            }
+        });
+
+        // Always highlight the entire row
+        billedOrdersTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int row = billedOrdersTable.rowAtPoint(e.getPoint());
+                billedOrdersTable.getSelectionModel().setSelectionInterval(row, row);
+                billButton.setEnabled(false);
+            }
+        });
 
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(southPanel, BorderLayout.SOUTH);

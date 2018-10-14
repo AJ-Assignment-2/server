@@ -23,9 +23,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * @author Imanuel
- */
 public class ChefController implements ChefModelObserver {
     private ChefView chefView;
     private ChefModel chefModel;

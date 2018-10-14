@@ -1,5 +1,6 @@
 package clients.customer;
 
+import model.MenuItem.MenuItemColumnWidthRenderer;
 import model.MenuItem.MenuItemTableModel;
 import model.MenuItem.MenuItemTotalsTableModel;
 
@@ -13,10 +14,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-/**
- *
- * @author Imanuel
- */
 public class CustomerOrderView extends JFrame {
 
     private JPanel rootPanel;
@@ -70,6 +67,7 @@ public class CustomerOrderView extends JFrame {
         foodLabel = new JLabel("Food");
         beverageLabel = new JLabel("Beverage");
         applicationTitleLabel = new JLabel("Welcome to the Restaurant!");
+        applicationTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
         applicationTitleLabel.setFont(new Font("Arial", Font.BOLD, 26));
 
         // MARK: Init buttons
@@ -77,7 +75,9 @@ public class CustomerOrderView extends JFrame {
         displayChoicesButton = new JButton("Display Choices");
         displayOrderButton = new JButton("Display Order");
         clearDisplayButton = new JButton("Clear Display");
+        clearDisplayButton.setEnabled(false);
         submitOrderButton = new JButton("Submit Order");
+        submitOrderButton.setEnabled(false);
         quitButton = new JButton("Exit");
 
         breakfastRadioButton = new JRadioButton("Breakfast");
@@ -90,6 +90,7 @@ public class CustomerOrderView extends JFrame {
 
         // MARK: Init tables and scroll panes
         orderItemTable = new JTable(new MenuItemTotalsTableModel(new ArrayList<>()));
+
         orderTableScrollPane = new JScrollPane(orderItemTable);
 
         // MARK: Init combo boxes
@@ -123,6 +124,10 @@ public class CustomerOrderView extends JFrame {
         customerDetailsPanel.add(customerTablePanel);
         customerDetailsPanel.add(mealPanel);
 
+        // MARK: Setup title panel
+        JPanel titlePanel = new JPanel(new BorderLayout());
+        titlePanel.add(applicationTitleLabel, BorderLayout.CENTER);
+
         // MARK: Setup menu item selection panel
         chooseMenuItemsPanel = new JPanel();
         chooseMenuItemsPanel.setLayout(new BoxLayout(chooseMenuItemsPanel, BoxLayout.X_AXIS));
@@ -144,7 +149,7 @@ public class CustomerOrderView extends JFrame {
         buttonPanel.add(quitButton);
 
         // MARK: Attach the panels to the root container and add this container to the JFrame
-        rootPanel.add(applicationTitleLabel);
+        rootPanel.add(titlePanel);
         rootPanel.add(customerDetailsPanel);
         rootPanel.add(chooseMenuItemsPanel);
         rootPanel.add(orderTableScrollPane);
@@ -219,6 +224,10 @@ public class CustomerOrderView extends JFrame {
         return breakfastRadioButton;
     }
 
+    public JButton getSubmitOrderButton() {
+        return submitOrderButton;
+    }
+
     public void showErrorDialog(String information, String titleDialog) {
         JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.ERROR_MESSAGE);
     }
@@ -229,6 +238,10 @@ public class CustomerOrderView extends JFrame {
 
     public JTextArea getNameTextArea() {
         return nameTextArea;
+    }
+
+    public JButton getClearDisplayButton() {
+        return clearDisplayButton;
     }
 
     public JTable getOrderItemTable() {

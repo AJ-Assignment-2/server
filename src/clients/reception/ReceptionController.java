@@ -64,9 +64,6 @@ public class ReceptionController implements ReceptionModelObserver {
             selectedBilledOrder = billedOrdersTableModel.getOrder(billedOrdersSelectedRow);
         }
 
-        Collections.sort(servedOrders, new OrderComparator());
-        Collections.sort(billedOrders, new OrderComparator());
-
         servedOrdersTableModel.setOrders(servedOrders);
         billedOrdersTableModel.setOrders(billedOrders);
 
@@ -119,9 +116,19 @@ public class ReceptionController implements ReceptionModelObserver {
             if (table.getSelectedRow() != -1) {
                 OrderTableModel tableModel = (OrderTableModel) table.getModel();
                 Order selectedOrder = tableModel.getOrder(table.getSelectedRow());
+                //table.setRowSelectionInterval(table.getSelectedRow(), table.getSelectedRow());
 
-                List<MenuItem> menuItems = new ArrayList<>(selectedOrder.getMenuItemSelections().keySet());
-                menuItems.sort(new MenuItemComparator());
+                List<MenuItem> menuItems = new ArrayList<>();
+
+                for (MenuItem item : selectedOrder.getMenuItemSelections().keySet()) {
+                    int quantity = selectedOrder.getMenuItemSelections().get(item);
+
+                    for (int i = 0; i < quantity; i++) {
+                        menuItems.add(item);
+                    }
+                }
+
+                Collections.sort(menuItems, new MenuItemComparator());
 
                 MenuItemTotalsTableModel menuItemTableModel = (MenuItemTotalsTableModel) receptionView.getOrderItemDetailTable().getModel();
                 menuItemTableModel.setMenuItems(menuItems);
