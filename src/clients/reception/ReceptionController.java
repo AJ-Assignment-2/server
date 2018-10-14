@@ -26,63 +26,99 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- *
  * @author Imanuel
  */
 public class ReceptionController implements ReceptionModelObserver {
     private ReceptionView receptionView;
     private ReceptionModel receptionModel;
-    
-    public ReceptionController(ReceptionView receptionView, ReceptionModel receptionModel){
+
+    public ReceptionController(ReceptionView receptionView, ReceptionModel receptionModel) {
         this.receptionView = receptionView;
         this.receptionModel = receptionModel;
         this.receptionModel.addReceptionModelObserver(this);
-        
+
         this.receptionView.addMenuAboutListener(new MenuAboutListener());
         this.receptionView.addBillButtonListener(new BillSelectedOrderListener());
         this.receptionView.addExitButtonListener(new ExitButtonListener());
-        this.receptionView.getServedOrdersTable().getSelectionModel().addListSelectionListener(new OrderSelectedListener());
+        this.receptionView.getServedOrdersTable().getSelectionModel().addListSelectionListener(new OrderSelectedListener(receptionView.getServedOrdersTable()));
+        this.receptionView.getBilledOrdersTable().getSelectionModel().addListSelectionListener(new OrderSelectedListener(receptionView.getBilledOrdersTable()));
     }
 
     @Override
     public void ordersReceivedFromServer(List<Order> servedOrders, List<Order> billedOrders) {
-        OrderTableModel servedOrdersTableModel = (OrderTableModel)this.receptionView.getServedOrdersTable().getModel();
-        OrderTableModel billedOrdersTableModel = (OrderTableModel)this.receptionView.getBilledOrdersTable().getModel();
+        JTable servedOrdersTable = receptionView.getServedOrdersTable();
+        JTable billedOrdersTable = receptionView.getBilledOrdersTable();
+
+        OrderTableModel servedOrdersTableModel = (OrderTableModel) servedOrdersTable.getModel();
+        OrderTableModel billedOrdersTableModel = (OrderTableModel) billedOrdersTable.getModel();
+
+        int servedOrdersSelectedRow = servedOrdersTable.getSelectedRow();
+        int billedOrdersSelectedRow = billedOrdersTable.getSelectedRow();
+
+        Order selectedServedOrder = null;
+        Order selectedBilledOrder = null;
+
+        if (servedOrdersSelectedRow != -1) {
+            selectedServedOrder = servedOrdersTableModel.getOrder(servedOrdersSelectedRow);
+        } else if (billedOrdersSelectedRow != -1) {
+            selectedBilledOrder = billedOrdersTableModel.getOrder(billedOrdersSelectedRow);
+        }
 
         Collections.sort(servedOrders, new OrderComparator());
+        Collections.sort(billedOrders, new OrderComparator());
 
         servedOrdersTableModel.setOrders(servedOrders);
         billedOrdersTableModel.setOrders(billedOrders);
 
-        this.receptionView.getServedOrdersTable().setModel(new OrderTableModel(servedOrders));
-        this.receptionView.getBilledOrdersTable().setModel(new OrderTableModel(billedOrders));
+        servedOrdersTableModel.fireTableDataChanged();
+        billedOrdersTableModel.fireTableDataChanged();
+
+        if (selectedServedOrder != null) {
+            for (Order order : servedOrders) {
+                if (order.equals(selectedServedOrder)) {
+                    int selectedRow = servedOrders.indexOf(order);
+                    servedOrdersTable.setRowSelectionInterval(selectedRow, selectedRow);
+                }
+            }
+        } else if (selectedBilledOrder != null) {
+            for (Order order : billedOrders) {
+                if (order.equals(selectedBilledOrder)) {
+                    int selectedRow = billedOrders.indexOf(order);
+                    billedOrdersTable.setRowSelectionInterval(selectedRow, selectedRow);
+                }
+            }
+        }
     }
-    
-    private class MenuAboutListener implements ActionListener{
+
+    private class MenuAboutListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            receptionView.showMessageDialog("","About Us");
+            receptionView.showMessageDialog("", "About Us");
         }
     }
-    
-    private class ExitButtonListener implements ActionListener{
+
+    private class ExitButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
         }
-        
+
     }
 
     private class OrderSelectedListener implements ListSelectionListener {
+        private final JTable table;
+
+        public OrderSelectedListener(JTable table) {
+            this.table = table;
+        }
+
         @Override
         public void valueChanged(ListSelectionEvent e) {
-            JTable servedOrdersTable = receptionView.getServedOrdersTable();
-            int selectedRow = servedOrdersTable.getSelectedRow();
-            if (selectedRow >= 0) {
-                OrderTableModel tableModel = (OrderTableModel) servedOrdersTable.getModel();
-                Order selectedOrder = tableModel.getOrder(selectedRow);
+            if (table.getSelectedRow() != -1) {
+                OrderTableModel tableModel = (OrderTableModel) table.getModel();
+                Order selectedOrder = tableModel.getOrder(table.getSelectedRow());
 
                 List<MenuItem> menuItems = new ArrayList<>(selectedOrder.getMenuItemSelections().keySet());
                 menuItems.sort(new MenuItemComparator());
@@ -90,9 +126,9 @@ public class ReceptionController implements ReceptionModelObserver {
                 MenuItemTotalsTableModel menuItemTableModel = (MenuItemTotalsTableModel) receptionView.getOrderItemDetailTable().getModel();
                 menuItemTableModel.setMenuItems(menuItems);
                 menuItemTableModel.fireTableDataChanged();
-
-                
             }
+
+
         }
     }
 

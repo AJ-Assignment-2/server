@@ -5,7 +5,6 @@
  */
 package clients.reception;
 
-//import clients.customer.MenuItemTableModel;
 import model.MenuItem.MenuItemTotalsTableModel;
 import model.Order.OrderTableModel;
 
@@ -18,19 +17,11 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
-/**
- *
- * @author Imanuel
- */
 public class ReceptionView extends JFrame {
 
     private JMenuBar menuBar;
     private JMenu menuFile;
     private JMenuItem menuAbout;
-
-    private Border border;
-
-    private JPanel northPanel;
 
     private JPanel centerPanel;
     private JPanel servedOrdersPanel;
@@ -65,10 +56,6 @@ public class ReceptionView extends JFrame {
         menuBar.add(menuFile);
         this.setJMenuBar(menuBar);
 
-        border = BorderFactory.createLineBorder(Color.BLACK);
-
-        northPanel = new JPanel();
-
         // Initialise JTables
         servedOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
         billedOrdersTable = new JTable(new OrderTableModel(new ArrayList<>()));
@@ -95,8 +82,8 @@ public class ReceptionView extends JFrame {
         orderItemDetailsContainer = new JScrollPane(orderItemDetailTable);
 
 
-        servedOrdersTableContainer.setPreferredSize(new Dimension(0, 200));
-        billedOrdersTableContainer.setPreferredSize(new Dimension(0, 200));
+        servedOrdersTableContainer.setPreferredSize(new Dimension(300, 200));
+        billedOrdersTableContainer.setPreferredSize(new Dimension(300, 200));
         orderItemDetailsContainer.setPreferredSize(new Dimension(700, 200));
         servedOrdersTableContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         billedOrdersTableContainer.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -120,6 +107,13 @@ public class ReceptionView extends JFrame {
         exitButton = new JButton("Exit");
         southPanel.add(billButton);
         southPanel.add(exitButton);
+
+        billedOrdersTable.getSelectionModel().addListSelectionListener(event -> servedOrdersTable.clearSelection());
+        billedOrdersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        billedOrdersTable.setCellSelectionEnabled(false);
+        billedOrdersTable.setRowSelectionAllowed(true);
+        servedOrdersTable.getSelectionModel().addListSelectionListener(event -> billedOrdersTable.clearSelection());
+        servedOrdersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         this.add(centerPanel, BorderLayout.CENTER);
         this.add(southPanel, BorderLayout.SOUTH);

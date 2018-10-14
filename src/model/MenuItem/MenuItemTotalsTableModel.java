@@ -1,6 +1,7 @@
 package model.MenuItem;
 
 import javax.swing.table.AbstractTableModel;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class MenuItemTotalsTableModel extends AbstractTableModel {
@@ -49,12 +50,17 @@ public class MenuItemTotalsTableModel extends AbstractTableModel {
 
     /**
      * Returns the amount of rows to display in the table.
+     * Don't display the totals row if there are no menu items being displayed.
      *
      * @return Amount of rows to display in the table.
      */
     @Override
     public int getRowCount() {
-        return menuItems.size() + 2;
+        if (menuItems.size() > 0) {
+            return menuItems.size() + 2;
+        } else {
+            return menuItems.size();
+        }
     }
 
     /**
@@ -121,8 +127,8 @@ public class MenuItemTotalsTableModel extends AbstractTableModel {
         } else if (row == getRowCount() - 1) {
             int priceTotal = 0;
             int energyTotal = 0;
-            int proteanTotal = 0;
-            int carbTotal = 0;
+            double proteanTotal = 0;
+            double carbTotal = 0;
             double fatTotal = 0;
             double fibreTotal = 0;
 
@@ -130,9 +136,9 @@ public class MenuItemTotalsTableModel extends AbstractTableModel {
                 priceTotal += item.getPrice();
                 energyTotal += item.getEnergy();
                 proteanTotal += item.getProtean();
-                carbTotal += item.getCarbohydrates();
-                fatTotal += item.getFat();
-                fibreTotal += item.getFibre();
+                carbTotal += new BigDecimal(item.getCarbohydrates()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                fatTotal += new BigDecimal(item.getFat()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                fibreTotal += new BigDecimal(item.getFibre()).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
             }
 
             switch (column) {
@@ -143,13 +149,13 @@ public class MenuItemTotalsTableModel extends AbstractTableModel {
                 case 2:
                     return energyTotal;
                 case 3:
-                    return proteanTotal;
+                    return String.format("%1.2f", proteanTotal);
                 case 4:
-                    return carbTotal;
+                    return String.format("%1.2f", carbTotal);
                 case 5:
-                    return fatTotal;
+                    return String.format("%1.2f", fatTotal);
                 case 6:
-                    return fibreTotal;
+                    return String.format("%1.2f", fibreTotal);
                 default:
                     return "";
             }

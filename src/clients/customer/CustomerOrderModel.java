@@ -62,6 +62,10 @@ public class CustomerOrderModel implements ObservableCustomerOrderModel{
         return customerOrder;
     }
 
+    public void setCustomerOrder(Order customerOrder) {
+        this.customerOrder = customerOrder;
+    }
+
     public void submitCustomerOrder() {
         try {
             customerOrder.setState(OrderState.WAITING);
@@ -69,7 +73,6 @@ public class CustomerOrderModel implements ObservableCustomerOrderModel{
         } catch (RemoteException e) {
             LOGGER.log(Level.SEVERE, "Unable to submit customer order", e);
         }
-
     }
 
     @Override

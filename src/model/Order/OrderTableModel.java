@@ -22,7 +22,7 @@ public class OrderTableModel extends AbstractTableModel {
     }
 
     public Order getOrder(int row) {
-        if (orders != null) {
+        if (orders != null && row != -1) {
             return orders.get(row);
         } else {
             return null;

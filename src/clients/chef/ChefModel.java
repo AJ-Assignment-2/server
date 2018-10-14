@@ -5,7 +5,6 @@
  */
 package clients.chef;
 
-import model.MenuItem.MenuItem;
 import model.Order.Order;
 import model.Order.OrderComparator;
 import model.Order.OrderState;
@@ -15,16 +14,12 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-/**
- *
- * @author Imanuel
- */
+
 public class ChefModel implements ObservableChefModel {
     private static final Logger LOGGER = Logger.getLogger(ChefModel.class.getName());
 

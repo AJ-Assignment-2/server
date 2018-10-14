@@ -1,6 +1,7 @@
 package clients.customer;
 
 import model.MenuItem.MenuItemTableModel;
+import model.MenuItem.MenuItemTotalsTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -88,7 +89,7 @@ public class CustomerOrderView extends JFrame {
         radioButtonGroup.add(dinnerRadioButton);
 
         // MARK: Init tables and scroll panes
-        orderItemTable = new JTable(new MenuItemTableModel(new ArrayList<>()));
+        orderItemTable = new JTable(new MenuItemTotalsTableModel(new ArrayList<>()));
         orderTableScrollPane = new JScrollPane(orderItemTable);
 
         // MARK: Init combo boxes
@@ -214,6 +215,10 @@ public class CustomerOrderView extends JFrame {
         return beverageComboBox;
     }
 
+    public JRadioButton getBreakfastRadioButton() {
+        return breakfastRadioButton;
+    }
+
     public void showErrorDialog(String information, String titleDialog) {
         JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.ERROR_MESSAGE);
     }
@@ -222,21 +227,8 @@ public class CustomerOrderView extends JFrame {
         return tableNumberComboBox;
     }
 
-    public void setResetScreen() {
-//        radioButtonGroup.clearSelection();
-//        foodComboBox.removeAllItems();
-//        beverageComboBox.removeAllItems();
-//        foodComboBox.addItem("-------- Select the food --------");
-//        beverageComboBox.addItem("-------- Select the beverage --------");
-//        this.getContentPane().remove(centrePanel);
-//        this.getContentPane().invalidate();
-//        this.getContentPane().validate();
-//        clearDisplayButton.setEnabled(false);
-    }
-    
-    public void setDisableInputNameAndTable() {
-        nameTextArea.setEditable(false);
-        tableNumberComboBox.setEnabled(false);
+    public JTextArea getNameTextArea() {
+        return nameTextArea;
     }
 
     public JTable getOrderItemTable() {
