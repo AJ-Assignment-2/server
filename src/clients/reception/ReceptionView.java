@@ -48,6 +48,9 @@ public class ReceptionView extends JFrame {
 
     private String[][] labels = {{"Customer Details"}, {"Order Status"}, {"Command Buttons"}};
 
+    /**
+     * Initialise the different components displayed by this view
+     */
     public ReceptionView() {
         this.menuBar = new JMenuBar();
         this.menuFile = new JMenu("File");
@@ -139,6 +142,8 @@ public class ReceptionView extends JFrame {
         this.add(southPanel, BorderLayout.SOUTH);
     }
 
+    // MARK: Public methods so listeners may be added to view components
+
     public void addMenuAboutListener(ActionListener menuAboutListener) {
         menuAbout.addActionListener(menuAboutListener);
     }
@@ -159,14 +164,26 @@ public class ReceptionView extends JFrame {
         JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Returns the table that contains orders with the served state.
+     * @return the JTable that contains orders with the served state.
+     */
     public JTable getServedOrdersTable() {
         return servedOrdersTable;
     }
 
+    /**
+     * Returns the table that contains orders with the Billed state.
+     * @return the JTable that contains orders with the BGilled state.
+     */
     public JTable getBilledOrdersTable() {
         return billedOrdersTable;
     }
 
+    /**
+     * Returns the table that contains menu items contained in a selected order.
+     * @return the JTable that contains menu items contained in a selected order.
+     */
     public JTable getOrderItemDetailTable() {
         return orderItemDetailTable;
     }

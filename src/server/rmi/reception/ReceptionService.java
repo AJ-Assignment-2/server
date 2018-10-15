@@ -7,6 +7,9 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * The contract defining the operations the reception RMI service can perform.
+ */
 public interface ReceptionService extends Remote {
     /**
      * Change a given orders state to BILLED

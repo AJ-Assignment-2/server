@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+/**
+ * The customer view comprises of a section that allows a customer to enter their name, table number and meal time.
+ * The customer can select menu items and add them to an order, this order can be submitted to the server.
+ */
 public class CustomerOrderView extends JFrame {
 
     private JPanel rootPanel;
@@ -51,6 +55,9 @@ public class CustomerOrderView extends JFrame {
     private JButton clearDisplayButton;
     private JButton quitButton;
 
+    /**
+     * Initialise the different components used for the customer view.
+     */
     public CustomerOrderView() {
         Border border = BorderFactory.createLineBorder(Color.BLACK);
 
@@ -154,16 +161,7 @@ public class CustomerOrderView extends JFrame {
         add(rootPanel);
     }
 
-    public String[] getTableNumbers() {
-        int maxTableNumbers = 12;
-        String[] tableNumbers = new String[maxTableNumbers + 1];
-        tableNumbers[0] = "Select a table number";
-        for(int i = 1; i <= 12; i++) {
-            tableNumbers[i] = Integer.toString(i);
-        }
-        return tableNumbers;
-    }
-    
+    // MARK: Methods to add listeners to the different UI elements
     public void addBreakfastRadioButtonListener(ActionListener breakfastRadioButtonListener) {
         breakfastRadioButton.addActionListener(breakfastRadioButtonListener);
     }
@@ -200,46 +198,105 @@ public class CustomerOrderView extends JFrame {
         quitButton.addActionListener(quitButtonListener);
     }
 
+    /**
+     * Create array containing possible table numbers
+     * @return
+     */
+    public String[] getTableNumbers() {
+        int maxTableNumbers = 12;
+        String[] tableNumbers = new String[maxTableNumbers + 1];
+        tableNumbers[0] = "Select a table number";
+        for(int i = 1; i <= 12; i++) {
+            tableNumbers[i] = Integer.toString(i);
+        }
+        return tableNumbers;
+    }
+
+    /**
+     * Get the customer name input area text.
+     * @return Customer name input area text.
+     */
     public String getCustomerName() {
         return nameTextArea.getText();
     }
 
+    /**
+     * Get the customer table selected jcombobox item in string format.
+     * @return string representing the currently selected item
+     */
     public String getCustomerTable() {
         return tableNumberComboBox.getSelectedItem().toString();
     }
 
+    /**
+     * Get the food combo box.
+     * @return The food combobox
+     */
     public JComboBox<String> getFoodComboBox() {
         return foodComboBox;
     }
 
+    /**
+     * Get the beverage combo box
+     * @return The beverage combo box
+     */
     public JComboBox<String> getBeverageComboBox() {
         return beverageComboBox;
     }
 
+    /**
+     * Get the breakfast radio button.
+     * @return The breakfast radio button
+     */
     public JRadioButton getBreakfastRadioButton() {
         return breakfastRadioButton;
     }
 
+    /**
+     * Get the submit order button.
+     * @return The submit order button.
+     */
     public JButton getSubmitOrderButton() {
         return submitOrderButton;
     }
 
+    /**
+     * Displays an error dialog with the given string and title
+     * @param information information to display in dialog
+     * @param titleDialog information to display in title bar.
+     */
     public void showErrorDialog(String information, String titleDialog) {
         JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.ERROR_MESSAGE);
     }
 
+    /**
+     * Get the table number combox
+     * @return the table number combox
+     */
     public JComboBox getTableNumberComboBox() {
         return tableNumberComboBox;
     }
 
+    /**
+     * Get the name text area
+     * @return The name text area
+     */
     public JTextArea getNameTextArea() {
         return nameTextArea;
     }
 
+    /**
+     * Get the clear display button
+     * @return The clear display button
+     */
     public JButton getClearDisplayButton() {
         return clearDisplayButton;
     }
 
+    /**
+     * Get the order item details table
+     * @return The order item details table.
+     */
     public JTable getOrderItemTable() {
         return orderItemTable;
     }

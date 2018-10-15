@@ -1,5 +1,8 @@
 package clients.chef;
 
+/**
+ * Entry point for the chef client application.
+ */
 public class ChefApplication {
     public static void main(String[] args){
         ChefView chefView =new ChefView();

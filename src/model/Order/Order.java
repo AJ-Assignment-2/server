@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 /**
  * Represents a customer's order with menu items.
+ * Uses a HashMap to track the quantities of ordered MenuItems.
  */
 public class Order implements Serializable {
     private int id;
@@ -25,10 +26,6 @@ public class Order implements Serializable {
 
     public HashMap<MenuItem, Integer> getMenuItemSelections() {
         return menuItemSelections;
-    }
-
-    public void setMenuItemSelections(HashMap<MenuItem, Integer> menuItemSelections) {
-        this.menuItemSelections = menuItemSelections;
     }
 
     public OrderState getState() {

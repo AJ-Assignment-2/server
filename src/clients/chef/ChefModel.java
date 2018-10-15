@@ -14,7 +14,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-
+/**
+ * This model maintains the state of the chef application
+ * It queries the server at a set interval to get the most recent order data.
+ * This model notifies its observers of state change when it receives data from the server.
+ */
 public class ChefModel implements ObservableChefModel {
     private static final Logger LOGGER = Logger.getLogger(ChefModel.class.getName());
 
@@ -23,6 +27,9 @@ public class ChefModel implements ObservableChefModel {
     private ChefService chefService;
     private List<ChefModelObserver> observers;
 
+    /**
+     * Connect to the RMI service and poll it for information at a set interval on a background thread.
+     */
     public ChefModel(){
         observers = new ArrayList<>();
         servedOrders = new ArrayList<>();
@@ -34,6 +41,7 @@ public class ChefModel implements ObservableChefModel {
             new Thread(() -> {
                 try {
                     while (true) {
+                        // Retrieve all orders from the RMI server.
                         setOrders(chefService.getAllOrders());
                         Thread.sleep(5000);
                     }
@@ -47,6 +55,7 @@ public class ChefModel implements ObservableChefModel {
         }
     }
 
+    // Set the model's orders, separating orders with the waiting or served state.
     public void setOrders(List<Order> orders) {
         Collections.sort(orders, new OrderComparator());
         this.waitingOrders = orders.stream().filter(order -> order.getState() == OrderState.WAITING)
@@ -58,25 +67,42 @@ public class ChefModel implements ObservableChefModel {
 
     }
 
+    /**
+     * Notify observers that the model's orders have changed.
+     */
     private void notifyOrdersChanged() {
         for (ChefModelObserver observer : observers) {
             observer.ordersUpdated(waitingOrders, servedOrders);
         }
     }
 
+    /**
+     * Update a selected order's state on the RMI server
+     *
+     * @param order The order to update.
+     */
     public void updateSelectedOrder(Order order) {
         try {
+            // Get the ID of the order and tell the RMI server to change its state to SERVED.
             chefService.markOrderServed(order.getId());
         } catch (RemoteException e) {
             LOGGER.log(Level.SEVERE, "Failed to send update command to RMI Server!", e);
         }
     }
 
+    /**
+     * Register an observer to the model.
+     * @param observer the observer to add
+     */
     @Override
     public void addChefModelObserver(ChefModelObserver observer) {
         observers.add(observer);
     }
 
+    /**
+     * Remove a registered observer to the model.
+     * @param observer model observer to remove.
+     */
     @Override
     public void removeChefModelObserver(ChefModelObserver observer) {
         observers.remove(observer);

@@ -20,11 +20,21 @@ import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 
+/**
+ * The controller for the customer screen.
+ * This controller holds references to both the view and the model and handles communication
+ * between the two.
+ */
 public class CustomerOrderController {
 
     private CustomerOrderView customerOrderView;
     private CustomerOrderModel customerOrderModel;
 
+    /**
+     * Register the customer view's listeners and initialise the references to the model and view.
+     * @param customerOrderView The customer view
+     * @param customerOrderModel The customer model
+     */
     public CustomerOrderController(CustomerOrderView customerOrderView, CustomerOrderModel customerOrderModel) {
         this.customerOrderModel = customerOrderModel;
         this.customerOrderView = customerOrderView;
@@ -42,6 +52,9 @@ public class CustomerOrderController {
         this.customerOrderView.getBreakfastRadioButton().doClick();
     }
 
+    /**
+     * Reset this screen to a state where it is ready for a new order to be processed.
+     */
     private void clearOrder() {
         customerOrderModel.setCustomerOrder(new Order());
         MenuItemTotalsTableModel menuItemTotalsTableModel = (MenuItemTotalsTableModel) customerOrderView.getOrderItemTable().getModel();
@@ -59,8 +72,10 @@ public class CustomerOrderController {
         customerOrderView.getTableNumberComboBox().setSelectedIndex(0);
     }
 
+    /**
+     * Updates the contents of the drop down menu when a menu category is selected.
+     */
     private class CategorySelectedButtonListener implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             MenuItemType selectedType = null;
@@ -85,6 +100,9 @@ public class CustomerOrderController {
 
     }
 
+    /**
+     * Creates and order if it does not exists and adds the selected items to this order.
+     */
     private class EnterDataButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -119,6 +137,9 @@ public class CustomerOrderController {
         }
     }
 
+    /**
+     * Display the currently selected choices in the table that displays menu items.
+     */
     private class DisplayChoicesButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -134,6 +155,9 @@ public class CustomerOrderController {
         }
     }
 
+    /**
+     * Display the menu items contained in the current order.
+     */
     private class DisplayOrderButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -161,6 +185,10 @@ public class CustomerOrderController {
         }
     }
 
+    /**
+     * Tell the model to submit the current customer order.
+     * Reset the screen and get ready for a new order once this has been done.
+     */
     private class SubmitOrderButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -174,6 +202,9 @@ public class CustomerOrderController {
         }
     }
 
+    /**
+     * When the clear order button is pressed reset the screen so it is ready for a new order.
+     */
     private class ClearButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -182,6 +213,9 @@ public class CustomerOrderController {
 
     }
 
+    /**
+     * Exit the application if the quit button is pressed
+     */
     private class QuitSystem implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -189,6 +223,9 @@ public class CustomerOrderController {
         }
     }
 
+    /**
+     * Custom renderer used to display menu items in the combobox.
+     */
     private class MenuItemNameCellRenderer extends DefaultListCellRenderer {
         @Override
         public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {

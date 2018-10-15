@@ -3,6 +3,9 @@ package model.Order;
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * A table model used to present Order objects in tabular format.
+ */
 public class OrderTableModel extends AbstractTableModel {
     private String[] columnNames = {
             "Customer Name",

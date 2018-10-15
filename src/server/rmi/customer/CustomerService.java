@@ -8,6 +8,9 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
 
+/**
+ * The contract defining the operations the customer RMI service can perform.
+ */
 public interface CustomerService extends Remote {
     /**
      * Creates an order in the remote database.
@@ -15,8 +18,6 @@ public interface CustomerService extends Remote {
      * @throws RemoteException
      */
     void createOrder(Order order) throws RemoteException;
-
-    //OrderState getOrderStatus(Order order);
 
     /**
      * Get all menu items from the remote database.

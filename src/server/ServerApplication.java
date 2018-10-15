@@ -13,10 +13,20 @@ import java.sql.DriverManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The entry point for the Java RMI server.
+ * This binds the different RMI services so clients can connection and execute remote methods.
+ */
 public class ServerApplication {
     private static Logger LOGGER = Logger.getLogger(ServerApplication.class.getName());
 
     public static void main(String[] args) {
+//        try {
+//            LocateRegistry.createRegistry(1099);
+//        } catch (Exception e) {
+//            LOGGER.log(Level.SEVERE, "Unable to start RMI registry");
+//        }
+
         Connection attemptedConnection = null;
         try {
             attemptedConnection = DriverManager.getConnection("jdbc:derby:RestaurantOrderingDB;create=true");
@@ -24,6 +34,7 @@ public class ServerApplication {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
 
+        // Bind the different RMI services.
         try {
             ChefService chefService = new ChefServiceImpl(attemptedConnection);
             ReceptionService receptionService = new ReceptionServiceImpl(attemptedConnection);

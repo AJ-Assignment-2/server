@@ -14,6 +14,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+/**
+ * This model maintains the state of the reception client application.
+ * It polls the RMI server for order information and notifies its observers when order data is updated.
+ */
 public class ReceptionModel implements ObservableReceptionModel {
 
     private static final Logger LOGGER = Logger.getLogger(ReceptionModel.class.getName());
@@ -24,6 +28,9 @@ public class ReceptionModel implements ObservableReceptionModel {
     private List<Order> servedOrders;
     private List<Order> billedOrders;
 
+    /**
+     * Initialise member variables and start a new thread that polls the RMI service at a set interval.
+     */
     public ReceptionModel() {
         observers = new ArrayList<>();
         servedOrders = new ArrayList<>();
@@ -49,12 +56,19 @@ public class ReceptionModel implements ObservableReceptionModel {
         }
     }
 
+    /**
+     * Notify observers that the model's orders have been updated.
+     */
     private void notifyOrdersUpdated() {
         for (ReceptionModelObserver observer : observers) {
             observer.ordersReceivedFromServer(this.servedOrders, this.billedOrders);
         }
     }
 
+    /**
+     * Set the model list of orders, splitting billed and served orders into separate lists and discarding the rest.
+     * @param orders new list of orders
+     */
     private void setOrders(List<Order> orders) {
         Collections.sort(orders, new OrderComparator());
 
@@ -67,6 +81,10 @@ public class ReceptionModel implements ObservableReceptionModel {
         notifyOrdersUpdated();
     }
 
+    /**
+     * Tell the RMI server to change a provided orders state to billed.
+     * @param order order to update
+     */
     public void updateSelectedOrder(Order order) {
         try {
             receptionService.billOrder(order.getId());
@@ -74,12 +92,20 @@ public class ReceptionModel implements ObservableReceptionModel {
             LOGGER.log(Level.SEVERE, "Failed to send update command to RMI Server!", e);
         }
     }
-    
+
+    /**
+     * Register a reception model observer.
+     * @param observer the observer to register
+     */
     @Override
     public void addReceptionModelObserver(ReceptionModelObserver observer) {
         this.observers.add(observer);
     }
 
+    /**
+     * Remove a reception model observer.
+     * @param observer The observer to unregister.
+     */
     @Override
     public void removeReceptionModelObserver(ReceptionModelObserver observer) {
         this.observers.remove(observer);

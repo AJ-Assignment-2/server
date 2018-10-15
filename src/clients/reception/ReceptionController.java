@@ -16,10 +16,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * The controller for the reception screen...
+ * This controller observes the model so it can react to events and be notified of changes.
+ */
 public class ReceptionController implements ReceptionModelObserver {
     private ReceptionView receptionView;
     private ReceptionModel receptionModel;
 
+    /**
+     * Register listeners and intialise references to the view and model.
+     * @param receptionView The reception view
+     * @param receptionModel The reception model
+     */
     public ReceptionController(ReceptionView receptionView, ReceptionModel receptionModel) {
         this.receptionView = receptionView;
         this.receptionModel = receptionModel;
@@ -32,6 +41,12 @@ public class ReceptionController implements ReceptionModelObserver {
         this.receptionView.getBilledOrdersTable().getSelectionModel().addListSelectionListener(new OrderSelectedListener(receptionView.getBilledOrdersTable()));
     }
 
+    /**
+     * Be notified by the model that orders have been received from the server.
+     * Use the new order data to populate the view's order JTables.
+     * @param servedOrders new served orders
+     * @param billedOrders new billed orders
+     */
     @Override
     public void ordersReceivedFromServer(List<Order> servedOrders, List<Order> billedOrders) {
         JTable servedOrdersTable = receptionView.getServedOrdersTable();
@@ -75,6 +90,9 @@ public class ReceptionController implements ReceptionModelObserver {
         }
     }
 
+    /**
+     * Display the About Us dialog if the menu button is clicked.
+     */
     private class MenuAboutListener implements ActionListener {
 
         @Override
@@ -83,6 +101,9 @@ public class ReceptionController implements ReceptionModelObserver {
         }
     }
 
+    /**
+     * Exit the application if there is a click on the exit button.
+     */
     private class ExitButtonListener implements ActionListener {
 
         @Override
@@ -92,6 +113,9 @@ public class ReceptionController implements ReceptionModelObserver {
 
     }
 
+    /**
+     * Display an orders menu items in the bottom JTable when an order is selected.
+     */
     private class OrderSelectedListener implements ListSelectionListener {
         private final JTable table;
 
@@ -125,6 +149,9 @@ public class ReceptionController implements ReceptionModelObserver {
         }
     }
 
+    /**
+     * Tell the model to update the state of the selected order when the Bill button is pressed.
+     */
     private class BillSelectedOrderListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

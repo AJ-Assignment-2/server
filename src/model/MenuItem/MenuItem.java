@@ -17,6 +17,7 @@ public class MenuItem implements Serializable {
     private double fat;
     private double fibre;
 
+    // MARK: Getters and setters
 
     public String getName() {
         return name;
