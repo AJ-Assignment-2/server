@@ -4,6 +4,10 @@ import javax.swing.table.AbstractTableModel;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * A table model used to display menu items.
+ * This table contains two additional rows at the bottom, one is an empty spacer and the other shows totals information.
+ */
 public class MenuItemTotalsTableModel extends AbstractTableModel {
     private String[] columnNames = {
             "Name",
@@ -97,7 +101,7 @@ public class MenuItemTotalsTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int row, int column) {
 
-        // Check if we are displaying a menu item (as opposed to one of the totals rows.
+        // Check if we are displaying a menu item (as opposed to one of the totals rows).
         if (row < menuItems.size()) {
             MenuItem menuItem = menuItems.get(row);
             switch (column) {

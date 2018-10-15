@@ -8,12 +8,15 @@ import server.rmi.reception.ReceptionService;
 import server.rmi.reception.ReceptionServiceImpl;
 
 import java.rmi.Naming;
-import java.rmi.registry.LocateRegistry;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * The entry point for the Java RMI server.
+ * This binds the different RMI services so clients can connection and execute remote methods.
+ */
 public class ServerApplication {
     private static Logger LOGGER = Logger.getLogger(ServerApplication.class.getName());
 
@@ -31,6 +34,7 @@ public class ServerApplication {
             LOGGER.log(Level.SEVERE, e.toString(), e);
         }
 
+        // Bind the different RMI services.
         try {
             ChefService chefService = new ChefServiceImpl(attemptedConnection);
             ReceptionService receptionService = new ReceptionServiceImpl(attemptedConnection);

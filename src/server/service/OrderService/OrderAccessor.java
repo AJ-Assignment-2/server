@@ -177,7 +177,7 @@ public class OrderAccessor implements OrderDao {
             Statement statement = connection.createStatement();
             statement.execute(CREATE_TABLE);
         } catch (Exception e) {
-            LOGGER.log(Level.OFF, "Order table is probably already created");
+            //LOGGER.log(Level.OFF, "Order table is probably already created");
         }
     }
 
@@ -193,7 +193,7 @@ public class OrderAccessor implements OrderDao {
                     "quantity INTEGER )";
             statement.execute(orderItemTableSql);
         } catch (Exception e) {
-            LOGGER.log(Level.OFF, "RestaurantOrderItem table is probably already created");
+            //LOGGER.log(Level.OFF, "RestaurantOrderItem table is probably already created");
         }
     }
 

@@ -1,10 +1,11 @@
 package model.MenuItem;
 
-import model.MenuItem.MenuItem;
-
 import javax.swing.table.AbstractTableModel;
 import java.util.List;
 
+/**
+ * Table model used to represent menu item data.
+ */
 public class MenuItemTableModel extends AbstractTableModel {
     private String[] columnNames = {
             "Name",
