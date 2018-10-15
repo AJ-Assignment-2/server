@@ -12,6 +12,10 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.ListSelectionListener;
 
+/**
+ * The chef view that comprises mainly of two jtables displaying orders in different states.
+ * The third JTable displays a selected order's menu item details.
+ */
 public class ChefView extends JFrame{
     private Border border;
     
@@ -34,7 +38,10 @@ public class ChefView extends JFrame{
     private JTable orderDetailsTable;
 
     private JButton prepareButton;
-    
+
+    /**
+     * Initialise the different components contained within this view.
+     */
     public ChefView(){
         rootPanel = new JPanel();
         rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.Y_AXIS));
@@ -107,26 +114,50 @@ public class ChefView extends JFrame{
         add(rootPanel);
     }
 
+    /**
+     * Get the table containing an order's menu items.
+     * @return JTable containing selected order's menu items.
+     */
     public JTable getOrderDetailsTable() {
         return orderDetailsTable;
     }
 
+    /**
+     * Get the table containing all waiting orders.
+     * @return The table used to display all waiting orders.
+     */
     public JTable getWaitingOrdersTable() {
         return waitingOrdersTable;
     }
 
+    /**
+     * Get the table containing all served orders.
+     * @return The table used to display all served orders.
+     */
     public JTable getServedOrdersTable() {
         return servedOrdersTable;
     }
 
+    /**
+     * Add listener's to the prepare button.
+     * @param prepareButtonListener The listener to add
+     */
     public void addPrepareButtonListener(ActionListener prepareButtonListener){
         prepareButton.addActionListener(prepareButtonListener);
     }
 
+    /**
+     * Add listener for row selection events.
+     * @param listener The listener to add
+     */
     public void addWaitingOrdersRowSelectedListener(ListSelectionListener listener) {
         waitingOrdersTable.getSelectionModel().addListSelectionListener(listener);
     }
 
+    /**
+     * Add listener for row selection events.
+     * @param listener The listener to add
+     */
     public void addServedOrdersRowSelectedListener(ListSelectionListener listener) {
         servedOrdersTable.getSelectionModel().addListSelectionListener(listener);
     }

@@ -19,13 +19,26 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * The controller for the chef screen.
+ * This controller holds references to both the view and the model and can respond
+ * to notifications from the model.
+ */
 public class ChefController implements ChefModelObserver {
     private ChefView chefView;
     private ChefModel chefModel;
 
+    /**
+     * Initialises references to view and model.
+     * Registers the view's buttons with listeners declared in the controller.
+     *
+     * @param chefView a reference to the chef view
+     * @param chefModel a reference to the chef model
+     */
     public ChefController(ChefView chefView, ChefModel chefModel) {
         this.chefView = chefView;
         this.chefModel = chefModel;
+        // Register as a model observer
         this.chefModel.addChefModelObserver(this);
 
         this.chefView.addPrepareButtonListener(new PrepareButtonListener());
@@ -33,6 +46,13 @@ public class ChefController implements ChefModelObserver {
         this.chefView.addServedOrdersRowSelectedListener(new OrderTableRowSelectionListener(chefView.getServedOrdersTable()));
     }
 
+    /**
+     * Be notified that the model contains a new list of orders.
+     * Additional logic exits in this method to retain the selected row on table data update.
+     *
+     * @param waitingOrders new list of waiting orders.
+     * @param servedOrders new list of served orders
+     */
     @Override
     public void ordersUpdated(List<Order> waitingOrders, List<Order> servedOrders) {
         JTable waitingOrdersTable = chefView.getWaitingOrdersTable();
@@ -77,6 +97,12 @@ public class ChefController implements ChefModelObserver {
 
     }
 
+    /**
+     * When the prepare button is pressed, this action listener sends the order to
+     * the model so the server can be updated of the order's change of state.
+     *
+     * The prepare button is disabled if a order is not selected.
+     */
     private class PrepareButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -87,11 +113,15 @@ public class ChefController implements ChefModelObserver {
             if (selectedOrder != null) {
                 chefModel.updateSelectedOrder(selectedOrder);
             } else {
-                //chefView.showErrorDialog("You have not selected an order!", "Order Not Selected");
+                System.out.println("You have not selected an order!");
             }
         }
     }
 
+    /**
+     * When a table row is selected from one of the order tables, display the order's
+     * menu items in the menu item JTable.
+     */
     private class OrderTableRowSelectionListener implements ListSelectionListener {
         private final JTable table;
 

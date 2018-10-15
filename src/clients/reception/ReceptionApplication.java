@@ -1,5 +1,8 @@
 package clients.reception;
 
+/**
+ * The entry point for the reception application.
+ */
 public class ReceptionApplication {
     public static void main(String[] args){
         ReceptionView receptionView =new ReceptionView();
