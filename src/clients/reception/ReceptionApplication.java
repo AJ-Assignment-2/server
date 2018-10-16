@@ -9,7 +9,7 @@ public class ReceptionApplication {
         ReceptionModel receptionModel =new ReceptionModel();
         ReceptionController receptionController =new ReceptionController(receptionView, receptionModel);
         receptionView.setTitle("Restaurant Reception");
-        receptionView.setSize(1100,570);
+        receptionView.setSize(1100,600);
         receptionView.setVisible(true);
     }
 }

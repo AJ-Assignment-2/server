@@ -17,6 +17,10 @@ import javax.swing.event.ListSelectionListener;
  * The third JTable displays a selected order's menu item details.
  */
 public class ChefView extends JFrame{
+    private JMenuBar menuBar;
+    private JMenu menuFile;
+    private JMenuItem menuAbout;
+    
     private Border border;
     
     private JPanel rootPanel;
@@ -43,6 +47,14 @@ public class ChefView extends JFrame{
      * Initialise the different components contained within this view.
      */
     public ChefView(){
+        this.menuBar = new JMenuBar();
+        this.menuFile = new JMenu("File");
+        this.menuAbout = new JMenuItem("About");
+        menuFile.add(menuAbout);
+        menuBar.add(menuFile);
+        this.setJMenuBar(menuBar);
+        
+        
         rootPanel = new JPanel();
         rootPanel.setLayout(new BoxLayout(rootPanel, BoxLayout.Y_AXIS));
         border = BorderFactory.createLineBorder(Color.BLACK);
@@ -114,6 +126,25 @@ public class ChefView extends JFrame{
         add(rootPanel);
     }
 
+    /**
+     * A method to execute listener for menu button
+     * 
+     * @param addMenuAboutListener containing a listener of exit button
+     */
+    public void addMenuAboutListener(ActionListener menuAboutListener) {
+        menuAbout.addActionListener(menuAboutListener);
+    }
+    
+    /**
+     * A method to execute an message on the screen
+     * 
+     * @param information containing information to show the message to the user
+     * @param titleDialog containing a title for the message dialog
+     */
+    public void showMessageDialog(String information, String titleDialog) {
+        JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.INFORMATION_MESSAGE);
+    }
+    
     /**
      * Get the table containing an order's menu items.
      * @return JTable containing selected order's menu items.

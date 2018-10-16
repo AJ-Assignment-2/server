@@ -41,11 +41,25 @@ public class ChefController implements ChefModelObserver {
         // Register as a model observer
         this.chefModel.addChefModelObserver(this);
 
+        this.chefView.addMenuAboutListener(new MenuAboutListener());
+        
         this.chefView.addPrepareButtonListener(new PrepareButtonListener());
         this.chefView.addWaitingOrdersRowSelectedListener(new OrderTableRowSelectionListener(chefView.getWaitingOrdersTable()));
         this.chefView.addServedOrdersRowSelectedListener(new OrderTableRowSelectionListener(chefView.getServedOrdersTable()));
     }
 
+    /**
+     * Display the About Us dialog if the menu button is clicked.
+     */
+    private class MenuAboutListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            chefView.showMessageDialog("This simulator will simulate chef as client for an Assigment 2-Advance Java", "About Us");
+        }
+    }
+    
+    
     /**
      * Be notified that the model contains a new list of orders.
      * Additional logic exits in this method to retain the selected row on table data update.

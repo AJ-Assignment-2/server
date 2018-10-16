@@ -23,6 +23,7 @@ import java.util.List;
 public class ReceptionController implements ReceptionModelObserver {
     private ReceptionView receptionView;
     private ReceptionModel receptionModel;
+    private BillView billView;
 
     /**
      * Register listeners and intialise references to the view and model.
@@ -97,7 +98,7 @@ public class ReceptionController implements ReceptionModelObserver {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            receptionView.showMessageDialog("", "About Us");
+            receptionView.showMessageDialog("This simulator will simulate reception as client for an Assigment 2-Advance Java", "About Us");
         }
     }
 
@@ -138,7 +139,7 @@ public class ReceptionController implements ReceptionModelObserver {
                         menuItems.add(item);
                     }
                 }
-
+                
                 Collections.sort(menuItems, new MenuItemComparator());
 
                 MenuItemTotalsTableModel menuItemTableModel = (MenuItemTotalsTableModel) receptionView.getOrderItemDetailTable().getModel();
@@ -159,7 +160,12 @@ public class ReceptionController implements ReceptionModelObserver {
             OrderTableModel tableModel = (OrderTableModel) servedOrdersTable.getModel();
             Order selectedOrder = tableModel.getOrder(servedOrdersTable.getSelectedRow());
             if (selectedOrder != null) {
-                receptionModel.updateSelectedOrder(selectedOrder);
+//                receptionModel.updateSelectedOrder(selectedOrder);
+                BillView billView = new BillView(selectedOrder);
+                BillController billController = new BillController(billView);
+                billView.setTitle("Customer Receipt");
+                billView.setSize(500,600);
+                billView.setVisible(true);
             } else {
                 receptionView.showErrorDialog("You have not selected an order!", "Order Not Selected");
             }
