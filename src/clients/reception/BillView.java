@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import model.ColumnWidthUtil;
 import model.MenuItem.BillItem;
 import model.MenuItem.BillTableModel;
 import model.MenuItem.MenuItem;
@@ -67,6 +68,7 @@ public class BillView extends JFrame {
 
         
         orderListTable = new JTable(new BillTableModel(getListOrdered(selectedOrder)));
+        ColumnWidthUtil.adjustColumnWidths(orderListTable, new int[]{1});
         orderListPanel = new JScrollPane(orderListTable);
         centerPanel.add(customerDetailsPanel, BorderLayout.NORTH);
         centerPanel.add(orderListPanel, BorderLayout.SOUTH);
@@ -97,12 +99,9 @@ public class BillView extends JFrame {
         int count = 1;
         BillItem billItem;
         billItems = new ArrayList<>();
-        System.out.println(selectedOrder.getCustomerName());
-        System.out.println(selectedOrder.getTableNumber());
-        System.out.println("SIZE: "+selectedOrder.getMenuItemSelections().keySet().size());
         for(MenuItem item:selectedOrder.getMenuItemSelections().keySet()) {
             float total = selectedOrder.getMenuItemSelections().get(item)*item.getPrice();
-            billItem = new BillItem(selectedOrder.getMenuItemSelections().get(item), item.getName(), item.getPrice(), total);
+            billItem = new BillItem(selectedOrder.getMenuItemSelections().get(item), item.getName(), item.getPrice(), item.getEnergy(), item.getProtean(), item.getCarbohydrates(), item.getFat(), item.getFibre(), total);
             billItems.add(billItem);
         }
         return billItems;

@@ -15,12 +15,23 @@ public class BillItem implements Serializable {
     private int quantity;
     private String name;
     private int price;
+    private int energy;
+    private double protean;
+    private double carbohydrates;
+    private double fat;
+    private double fibre;
     private float total;
     
-    public BillItem(int quantity, String name, int price, float total) {
+    public BillItem(int quantity, String name, int price, int energy, double protean, double carbohydrates,
+                    double fat, double fibre, float total) {
         this.quantity =  quantity;
         this.name = name;
         this.price = price;
+        this.energy = energy;
+        this.protean = protean;
+        this.carbohydrates = carbohydrates;
+        this.fat = fat;
+        this.fibre = fibre;
         this.total = total;
     }
     
@@ -38,6 +49,47 @@ public class BillItem implements Serializable {
     
     public String getName() {
         return name;
+    }
+    
+    
+    public int getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
+    }
+
+    public double getProtean() {
+        return protean;
+    }
+
+    public void setProtean(double protean) {
+        this.protean = protean;
+    }
+
+    public double getFat() {
+        return fat;
+    }
+
+    public void setFat(double fat) {
+        this.fat = fat;
+    }
+
+    public double getFibre() {
+        return fibre;
+    }
+
+    public void setFibre(double fibre) {
+        this.fibre = fibre;
+    }
+
+    public double getCarbohydrates() {
+        return carbohydrates;
+    }
+
+    public void setCarbohydrates(double carbohydrates) {
+        this.carbohydrates = carbohydrates;
     }
     
     public void setPrice(int price) {

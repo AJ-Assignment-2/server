@@ -17,6 +17,11 @@ public class BillTableModel extends AbstractTableModel {
         "Quantity",
         "Name",
         "Price (AUD)",
+        "Energy (kj)",
+        "Protein (g)",
+        "Carbohydrates (g)",
+        "Fat (g)",
+        "Fibre (g)",
         "Total (AUD)",};
 
     private List<BillItem> billItems;
@@ -106,6 +111,16 @@ public class BillTableModel extends AbstractTableModel {
                 case 2:
                     return billItem.getPrice();
                 case 3:
+                    return billItem.getEnergy();
+                case 4:
+                    return billItem.getProtean();
+                case 5:
+                    return billItem.getCarbohydrates();
+                case 6:
+                    return billItem.getFat();
+                case 7:
+                    return billItem.getFibre();
+                case 8:
                     return billItem.getTotalPrice();
                 default:
                     return "undefined";
