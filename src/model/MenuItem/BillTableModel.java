@@ -16,7 +16,7 @@ public class BillTableModel extends AbstractTableModel {
     private String[] columnNames = {
         "Quantity",
         "Name",
-        "Price (AUD)",
+        "Price each (AUD)",
         "Energy (kj)",
         "Protein (g)",
         "Carbohydrates (g)",
@@ -111,15 +111,15 @@ public class BillTableModel extends AbstractTableModel {
                 case 2:
                     return billItem.getPrice();
                 case 3:
-                    return billItem.getEnergy();
+                    return billItem.getEnergy() * billItem.getQuantity();
                 case 4:
-                    return billItem.getProtean();
+                    return String.format("%1.2f",billItem.getProtean() * billItem.getQuantity());
                 case 5:
-                    return billItem.getCarbohydrates();
+                    return String.format("%1.2f",billItem.getCarbohydrates() * billItem.getQuantity());
                 case 6:
-                    return billItem.getFat();
+                    return String.format("%1.2f",billItem.getFat() * billItem.getQuantity());
                 case 7:
-                    return billItem.getFibre();
+                    return String.format("%1.2f",billItem.getFibre() * billItem.getQuantity());
                 case 8:
                     return billItem.getTotalPrice();
                 default:

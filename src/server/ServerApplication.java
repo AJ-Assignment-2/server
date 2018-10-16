@@ -8,6 +8,7 @@ import server.rmi.reception.ReceptionService;
 import server.rmi.reception.ReceptionServiceImpl;
 
 import java.rmi.Naming;
+import java.rmi.registry.LocateRegistry;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.logging.Level;
@@ -21,11 +22,11 @@ public class ServerApplication {
     private static Logger LOGGER = Logger.getLogger(ServerApplication.class.getName());
 
     public static void main(String[] args) {
-//        try {
-//            LocateRegistry.createRegistry(1099);
-//        } catch (Exception e) {
-//            LOGGER.log(Level.SEVERE, "Unable to start RMI registry");
-//        }
+        try {
+            LocateRegistry.createRegistry(1099);
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Unable to start RMI registry");
+        }
 
         Connection attemptedConnection = null;
         try {
