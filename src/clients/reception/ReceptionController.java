@@ -160,12 +160,16 @@ public class ReceptionController implements ReceptionModelObserver {
             OrderTableModel tableModel = (OrderTableModel) servedOrdersTable.getModel();
             Order selectedOrder = tableModel.getOrder(servedOrdersTable.getSelectedRow());
             if (selectedOrder != null) {
-                receptionModel.updateSelectedOrder(selectedOrder);
-                BillView billView = new BillView(selectedOrder);
-                BillController billController = new BillController(billView);
-                billView.setTitle("Customer Receipt");
-                billView.setSize(1000,600);
-                billView.setVisible(true);
+                int confirmationResult = JOptionPane.showConfirmDialog(receptionView, "Are you sure you want to bill this order?", "Mark order as billed", JOptionPane.YES_NO_OPTION);
+
+                if (confirmationResult == JOptionPane.YES_OPTION) {
+                    receptionModel.updateSelectedOrder(selectedOrder);
+                    BillView billView = new BillView(selectedOrder);
+                    BillController billController = new BillController(billView);
+                    billView.setTitle("Customer Receipt");
+                    billView.setSize(1000,600);
+                    billView.setVisible(true);
+                }
             } else {
                 receptionView.showErrorDialog("You have not selected an order!", "Order Not Selected");
             }

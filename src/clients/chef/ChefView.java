@@ -105,7 +105,6 @@ public class ChefView extends JFrame{
         servedOrdersTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
                 int row = servedOrdersTable.rowAtPoint(e.getPoint());
                 servedOrdersTable.getSelectionModel().setSelectionInterval(row, row);
                 prepareButton.setEnabled(false);
@@ -116,7 +115,6 @@ public class ChefView extends JFrame{
         waitingOrdersTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
                 int row = waitingOrdersTable.rowAtPoint(e.getPoint());
                 waitingOrdersTable.getSelectionModel().setSelectionInterval(row, row);
                 prepareButton.setEnabled(true);
@@ -129,7 +127,7 @@ public class ChefView extends JFrame{
     /**
      * A method to execute listener for menu button
      * 
-     * @param addMenuAboutListener containing a listener of exit button
+     * @param menuAboutListener containing a listener of exit button
      */
     public void addMenuAboutListener(ActionListener menuAboutListener) {
         menuAbout.addActionListener(menuAboutListener);

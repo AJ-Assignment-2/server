@@ -180,7 +180,7 @@ public class CustomerOrderView extends JFrame {
     /**
      * A method to execute listener for menu button
      * 
-     * @param addMenuAboutListener containing a listener of exit button
+     * @param menuAboutListener containing a listener of exit button
      */
     public void addMenuAboutListener(ActionListener menuAboutListener) {
         menuAbout.addActionListener(menuAboutListener);
