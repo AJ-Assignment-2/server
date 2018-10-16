@@ -39,6 +39,8 @@ public class CustomerOrderController {
         this.customerOrderModel = customerOrderModel;
         this.customerOrderView = customerOrderView;
 
+        this.customerOrderView.addMenuAboutListener(new MenuAboutListener());
+        
         this.customerOrderView.addBreakfastRadioButtonListener(new CategorySelectedButtonListener());
         this.customerOrderView.addLunchRadioButtonListener(new CategorySelectedButtonListener());
         this.customerOrderView.addDinnerRadioButtonListener(new CategorySelectedButtonListener());
@@ -72,6 +74,18 @@ public class CustomerOrderController {
         customerOrderView.getTableNumberComboBox().setSelectedIndex(0);
     }
 
+    /**
+     * Display the About Us dialog if the menu button is clicked.
+     */
+    private class MenuAboutListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            customerOrderView.showMessageDialog("This simulator will simulate customer as client for an Assigment 2-Advance Java", "About Us");
+        }
+    }
+    
+    
     /**
      * Updates the contents of the drop down menu when a menu category is selected.
      */

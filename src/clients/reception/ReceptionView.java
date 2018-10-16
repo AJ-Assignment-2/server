@@ -16,6 +16,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.*;
+import model.Order.Order;
 
 public class ReceptionView extends JFrame {
 
@@ -46,7 +47,7 @@ public class ReceptionView extends JFrame {
     private JButton exitButton;
 
 
-    private String[][] labels = {{"Customer Details"}, {"Order Status"}, {"Command Buttons"}};
+    private String[][] labels = {{"Customer Details"}, {"Order Status"}, {"A Customer List"}};
 
     /**
      * Initialise the different components displayed by this view
@@ -75,7 +76,7 @@ public class ReceptionView extends JFrame {
         orderStatusPanel.setBorder(BorderFactory.createTitledBorder(labels[1][0]));
         servingOrders = new JLabel("Orders waiting to be billed");
         billingOrders = new JLabel("Billed orders");
-        orderHistory = new JLabel("Selected order details");
+        orderHistory = new JLabel("A Customer order list");
         servingOrders.setHorizontalAlignment(JLabel.CENTER);
         billingOrders.setHorizontalAlignment(JLabel.CENTER);
         orderHistory.setHorizontalAlignment(JLabel.CENTER);
@@ -96,12 +97,14 @@ public class ReceptionView extends JFrame {
         orderStatusPanel.add(servedOrdersPanel);
         orderStatusPanel.add(billedOrdersPanel);
 
+        orderItemDetailsPanel.setBorder(BorderFactory.createTitledBorder(labels[2][0]));
         orderItemDetailsPanel.add(orderHistory, BorderLayout.NORTH);
         orderItemDetailsPanel.add(orderItemDetailsContainer, BorderLayout.SOUTH);
 
         centerPanel.add(orderStatusPanel, BorderLayout.NORTH);
-        centerPanel.add(orderItemDetailsContainer, BorderLayout.SOUTH);
+        centerPanel.add(orderItemDetailsPanel, BorderLayout.SOUTH);//////////////////////
 
+        
         southPanel = new JPanel();
         billButton = new JButton("Bill");
         billButton.setEnabled(false);
@@ -143,23 +146,49 @@ public class ReceptionView extends JFrame {
     }
 
     // MARK: Public methods so listeners may be added to view components
-
+    /**
+     * A method to execute listener for menu button
+     * 
+     * @param addMenuAboutListener containing a listener of exit button
+     */
     public void addMenuAboutListener(ActionListener menuAboutListener) {
         menuAbout.addActionListener(menuAboutListener);
     }
-
+    
+    /**
+     * A method to execute listener for exit button
+     * 
+     * @param exitButtonListener containing a listener of exit button
+     */
     public void addBillButtonListener(ActionListener billButtonListener) {
         billButton.addActionListener(billButtonListener);
     }
 
+    /**
+     * A method to execute listener for exit button
+     * 
+     * @param exitButtonListener containing a listener of exit button
+     */
     public void addExitButtonListener(ActionListener exitButtonListener) {
         exitButton.addActionListener(exitButtonListener);
     }
 
+    /**
+     * A method to execute an message on the screen
+     * 
+     * @param information containing information to show the message to the user
+     * @param titleDialog containing a title for the message dialog
+     */
     public void showMessageDialog(String information, String titleDialog) {
         JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.INFORMATION_MESSAGE);
     }
 
+    /**
+     * A method to execute an error message on the screen
+     * 
+     * @param information containing information of the error message
+     * @param titleDialog containing a title for the error message dialog
+     */
     public void showErrorDialog(String information, String titleDialog) {
         JOptionPane.showMessageDialog(this, information, titleDialog, JOptionPane.ERROR_MESSAGE);
     }
