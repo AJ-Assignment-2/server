@@ -98,7 +98,7 @@ public class ReceptionController implements ReceptionModelObserver {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            receptionView.showMessageDialog("This simulator will simulate reception as client for an Assigment 2-Advance Java", "About Us");
+            receptionView.showMessageDialog("Advanced Java - Assignment 2\nReception Client Application", "About Us");
         }
     }
 

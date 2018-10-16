@@ -47,7 +47,7 @@ public class ReceptionView extends JFrame {
     private JButton exitButton;
 
 
-    private String[][] labels = {{"Customer Details"}, {"Order Status"}, {"A Customer List"}};
+    private String[][] labels = {{"Menu Item Details"}, {"Order Status"}, {"Menu Item Details"}};
 
     /**
      * Initialise the different components displayed by this view
@@ -76,7 +76,7 @@ public class ReceptionView extends JFrame {
         orderStatusPanel.setBorder(BorderFactory.createTitledBorder(labels[1][0]));
         servingOrders = new JLabel("Orders waiting to be billed");
         billingOrders = new JLabel("Billed orders");
-        orderHistory = new JLabel("A Customer order list");
+        orderHistory = new JLabel("Menu items in the selected customer order");
         servingOrders.setHorizontalAlignment(JLabel.CENTER);
         billingOrders.setHorizontalAlignment(JLabel.CENTER);
         orderHistory.setHorizontalAlignment(JLabel.CENTER);

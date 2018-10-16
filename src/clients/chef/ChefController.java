@@ -55,7 +55,7 @@ public class ChefController implements ChefModelObserver {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            chefView.showMessageDialog("This simulator will simulate chef as client for an Assigment 2-Advance Java", "About Us");
+            chefView.showMessageDialog("Advanced Java - Assignment 2\nChef Client Application", "About Us");
         }
     }
     
@@ -154,7 +154,16 @@ public class ChefController implements ChefModelObserver {
                 OrderTableModel tableModel = (OrderTableModel) table.getModel();
                 Order selectedOrder = tableModel.getOrder(table.getSelectedRow());
 
-                List<MenuItem> selectedOrderMenuItems = new ArrayList<>(selectedOrder.getMenuItemSelections().keySet());
+                List<MenuItem> selectedOrderMenuItems = new ArrayList<>();
+
+                for (MenuItem item : selectedOrder.getMenuItemSelections().keySet()) {
+                    int quantity = selectedOrder.getMenuItemSelections().get(item);
+
+                    for (int i = 0; i < quantity; i++) {
+                        selectedOrderMenuItems.add(item);
+                    }
+                }
+
                 Collections.sort(selectedOrderMenuItems, new MenuItemComparator());
                 MenuItemTableModel menuItemTableModel = (MenuItemTableModel) chefView.getOrderDetailsTable().getModel();
                 menuItemTableModel.setMenuItems(selectedOrderMenuItems);
