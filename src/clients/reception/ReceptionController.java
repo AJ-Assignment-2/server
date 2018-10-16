@@ -160,7 +160,7 @@ public class ReceptionController implements ReceptionModelObserver {
             OrderTableModel tableModel = (OrderTableModel) servedOrdersTable.getModel();
             Order selectedOrder = tableModel.getOrder(servedOrdersTable.getSelectedRow());
             if (selectedOrder != null) {
-//                receptionModel.updateSelectedOrder(selectedOrder);
+                receptionModel.updateSelectedOrder(selectedOrder);
                 BillView billView = new BillView(selectedOrder);
                 BillController billController = new BillController(billView);
                 billView.setTitle("Customer Receipt");
