@@ -125,9 +125,14 @@ public class ChefController implements ChefModelObserver {
             Order selectedOrder = tableModel.getOrder(waitingOrdersTable.getSelectedRow());
 
             if (selectedOrder != null) {
-                chefModel.updateSelectedOrder(selectedOrder);
+                int confirmationResult = JOptionPane.showConfirmDialog(chefView, "Are you sure you want to mark this order as served?", "Mark as served", JOptionPane.YES_NO_OPTION);
+
+                if (confirmationResult == JOptionPane.YES_OPTION) {
+                    chefModel.updateSelectedOrder(selectedOrder);
+                }
+
             } else {
-                System.out.println("You have not selected an order!");
+                JOptionPane.showMessageDialog(chefView, "You don't have an order selected!");
             }
         }
     }

@@ -102,7 +102,7 @@ public class ReceptionView extends JFrame {
         orderItemDetailsPanel.add(orderItemDetailsContainer, BorderLayout.SOUTH);
 
         centerPanel.add(orderStatusPanel, BorderLayout.NORTH);
-        centerPanel.add(orderItemDetailsPanel, BorderLayout.SOUTH);//////////////////////
+        centerPanel.add(orderItemDetailsPanel, BorderLayout.SOUTH);
 
         
         southPanel = new JPanel();
@@ -149,7 +149,7 @@ public class ReceptionView extends JFrame {
     /**
      * A method to execute listener for menu button
      * 
-     * @param addMenuAboutListener containing a listener of exit button
+     * @param menuAboutListener containing a listener of exit button
      */
     public void addMenuAboutListener(ActionListener menuAboutListener) {
         menuAbout.addActionListener(menuAboutListener);
@@ -158,7 +158,7 @@ public class ReceptionView extends JFrame {
     /**
      * A method to execute listener for exit button
      * 
-     * @param exitButtonListener containing a listener of exit button
+     * @param billButtonListener containing a listener of exit button
      */
     public void addBillButtonListener(ActionListener billButtonListener) {
         billButton.addActionListener(billButtonListener);

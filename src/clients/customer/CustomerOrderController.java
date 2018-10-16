@@ -120,6 +120,13 @@ public class CustomerOrderController {
     private class EnterDataButtonListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            if (!customerOrderView.getCustomerName().chars().allMatch(Character::isLetter)) {
+                customerOrderView.showErrorDialog("Please only specify a first name consisting of letters only.", "Invalid Input");
+                return;
+            }
+
+
             if (!customerOrderView.getCustomerName().equals("") && !customerOrderView.getCustomerTable().equals("Select a table number")) {
                 customerOrderView.getClearDisplayButton().setEnabled(true);
                 customerOrderView.getSubmitOrderButton().setEnabled(true);
@@ -207,9 +214,11 @@ public class CustomerOrderController {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (customerOrderModel.getCustomerOrder().getMenuItemSelections().size() > 0) {
-                customerOrderModel.submitCustomerOrder();
-                clearOrder();
-
+                int confirmationResult = JOptionPane.showConfirmDialog(customerOrderView, "Are you sure you wish to submit your order?", "Confirm", JOptionPane.YES_NO_OPTION);
+                if (confirmationResult == JOptionPane.YES_OPTION) {
+                    customerOrderModel.submitCustomerOrder();
+                    clearOrder();
+                }
             } else {
                 customerOrderView.showErrorDialog("You have no items in your order!", "Please select items for your order");
             }

@@ -43,7 +43,7 @@ public class ChefModel implements ObservableChefModel {
                     while (true) {
                         // Retrieve all orders from the RMI server.
                         setOrders(chefService.getAllOrders());
-                        Thread.sleep(5000);
+                        Thread.sleep(1000);
                     }
                 } catch (Exception e) {
                     LOGGER.log(Level.WARNING, "Attempt to retrieve waiting orders failed.", e);
