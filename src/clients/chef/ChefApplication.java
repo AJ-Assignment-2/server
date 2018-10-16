@@ -9,7 +9,7 @@ public class ChefApplication {
         ChefModel chefModel =new ChefModel();
         ChefController chefController =new ChefController(chefView, chefModel);
         chefView.setTitle("Chef Screen Status");
-        chefView.setSize(1200,300);
+        chefView.setSize(1200,500);
         chefView.setVisible(true);
     }
 }

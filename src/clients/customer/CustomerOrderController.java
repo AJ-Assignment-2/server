@@ -81,7 +81,7 @@ public class CustomerOrderController {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            customerOrderView.showMessageDialog("This simulator will simulate customer as client for an Assigment 2-Advance Java", "About Us");
+            customerOrderView.showMessageDialog("Advanced Java - Assignment 2\nCustomer Client Application", "About Us");
         }
     }
     
